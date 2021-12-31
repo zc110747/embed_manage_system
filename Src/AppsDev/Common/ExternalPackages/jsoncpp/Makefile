@@ -1,0 +1,22 @@
+################################################################################
+#
+# THIS FILE IS BASIC MAKE FILE FOR
+# Copyright (c) 2020-2021
+# Original Author: 1107473010@qq.com
+#
+################################################################################
+
+# This is object should be build and will link to generate
+# the executable or staticLibrary
+Objects = json_reader.o \
+		json_value.o	\
+		json_writer.o
+
+IncludePath = include/
+
+# This is the file name of the executables and path where 
+# place the executable or staticLibrary
+TargetFile = libjason
+
+# Including this file allows access to the Build System.
+include ../../../../../Build/buildLibRules.mk
