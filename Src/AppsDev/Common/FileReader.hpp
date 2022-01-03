@@ -24,6 +24,7 @@ public:
         return is_vaild;
     }
     
+    bool get_json_member(string member, Json::Value *pIn, Json::Value *pOut);
 protected:
     Json::Value root;
 
