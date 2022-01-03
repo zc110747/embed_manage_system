@@ -36,9 +36,8 @@ FileReader::~FileReader()
 bool FileReader::get_json_member(string member, Json::Value *pIn, Json::Value *pOut)
 {
     if(pIn->isMember(member))
-    {
         *pOut = (*pIn)[member];
-    }
     else
         return false;
+    return true;
 }

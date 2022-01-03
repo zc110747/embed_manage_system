@@ -7,6 +7,7 @@
 
 #include <string>
 #include "ExternalPackages/jsoncpp/include/json/json.h"
+#include <iostream>
 
 using std::string;
 
@@ -24,12 +25,11 @@ public:
         return is_vaild;
     }
     
-    bool get_json_member(string member, Json::Value *pIn, Json::Value *pOut);
 protected:
     Json::Value root;
+    bool get_json_member(string member, Json::Value *pIn, Json::Value *pOut);
 
 private:
     string filepath;
     bool is_vaild;
-
-}
+};

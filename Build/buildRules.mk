@@ -19,7 +19,7 @@ all : $(TargetFile)
 	$(CC) $(CFLAGS) -c $< -o $@ -I $(IncludePath)
 
 $(TargetFile): $(Objects)
-	$(CC) -o $(TargetFile) $(Objects) $(LIB) $(CFLAGS)
+	$(CC) -o $(TargetFile) $(Objects) $(StaticLibs) $(CFLAGS)
 	rm $(Objects)
 	mv $(TargetFile) $(TargetFilePath)
 tags :

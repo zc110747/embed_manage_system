@@ -24,6 +24,21 @@ bool FileReaderHw::get_uart_info(UartInfo *pInfo)
         else
             is_error = false;
 
+        if(get_json_member("DataBits", &UartMember, &MemberValue))
+            pInfo->databits = MemberValue.asInt();
+        else
+            is_error = false;
+
+        if(get_json_member("StopBits", &UartMember, &MemberValue))
+            pInfo->stopbits = MemberValue.asInt();
+        else
+            is_error = false;
+
+        if(get_json_member("Parity", &UartMember, &MemberValue))
+            pInfo->parity = MemberValue.asString();
+        else
+            is_error = false;
+
         if(is_error)
         {
             printf("Json Value MemberValue have Invalid members!\r\n");
@@ -38,18 +53,6 @@ bool FileReaderHw::get_uart_info(UartInfo *pInfo)
         printf("Json Value root have Invalid member %s!\r\n", "Uart");
         return false;
     }
-
-
-
-    if(root.isMember("Uart"))
-    {
-        bool is_error = false;
-        Json::Value UartRoot = root["Uart"];
-        
-    pInfo->baud = root["Uart"]["Baud"].asInt();
-    pInfo->databits = root["Uart"]["DataBits"].asInt();
-    pInfo->stopbits = root["Uart"]["StopBits"].asInt();
-    pInfo->parity = std::string(root["Uart"]["Parity"].asString());
 
     return true;
 }

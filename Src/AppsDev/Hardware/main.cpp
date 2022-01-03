@@ -5,15 +5,22 @@
  */
 
 #include "device.hpp"
+#include "FileReaderHw.hpp"
 #include <string.h>
+
 
 int main(void)
 {
-    USR_DEVICE::device *pdev = new USR_DEVICE::device("hello.txt", O_CREAT | O_RDWR, 0666);
+    FileReaderHw *pReader = new FileReaderHw("hardware.json");
+    UartInfo Info;
 
-    pdev->write("hello word!", strlen("hello word!"));
+    if(pReader->get_uart_info(&Info))
+    {
+        std::cout<<Info.baud<<" "<<Info.databits<<" "<<Info.stopbits<<std::endl;
+        std::cout<<Info.parity<<std::endl;
+    }
 
-    delete pdev;
-
+    delete pReader;
+    pReader = nullptr;
     return 0;
 }
