@@ -1,80 +1,62 @@
 <mxfile host="65bd71144e">
     <diagram id="WGOShRHBxKI9BXy2auR0" name="第 1 页">
-        <mxGraphModel dx="854" dy="723" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+        <mxGraphModel dx="747" dy="614" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
-                <mxCell id="21" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-                    <mxGeometry x="40" y="80" width="660" height="590" as="geometry"/>
+                <mxCell id="21" value="" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="50" y="80" width="650" height="570" as="geometry"/>
                 </mxCell>
-                <mxCell id="3" value="Driver" style="rounded=0;whiteSpace=wrap;html=1;strokeWidth=3;fontSize=15;" parent="1" vertex="1">
+                <mxCell id="43" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;startArrow=classic;startFill=1;" edge="1" parent="1" source="39" target="38">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="39" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="70" y="100" width="470" height="370" as="geometry"/>
+                </mxCell>
+                <mxCell id="3" value="Driver" style="rounded=0;whiteSpace=wrap;html=1;strokeWidth=1;fontSize=15;" parent="1" vertex="1">
                     <mxGeometry x="80" y="580" width="600" height="50" as="geometry"/>
                 </mxCell>
-                <mxCell id="5" value="OS" style="rounded=0;whiteSpace=wrap;html=1;fontSize=15;strokeWidth=3;" parent="1" vertex="1">
+                <mxCell id="5" value="OS" style="rounded=0;whiteSpace=wrap;html=1;fontSize=15;strokeWidth=1;fillColor=none;" parent="1" vertex="1">
                     <mxGeometry x="80" y="490" width="600" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="7" value="Hardware" style="rounded=0;whiteSpace=wrap;html=1;fontSize=15;strokeWidth=3;" parent="1" vertex="1">
-                    <mxGeometry x="82.5" y="350" width="125" height="100" as="geometry"/>
+                <mxCell id="42" style="edgeStyle=none;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;startArrow=classic;startFill=1;" edge="1" parent="1" source="8" target="36">
+                    <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="8" value="WorkFlow" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-                    <mxGeometry x="280" y="120" width="150" height="200" as="geometry"/>
+                <mxCell id="8" value="WorkFlow" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="240" y="120" width="120" height="220" as="geometry"/>
                 </mxCell>
-                <mxCell id="10" value="Logger" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-                    <mxGeometry x="240" y="360" width="430" height="90" as="geometry"/>
+                <mxCell id="11" value="WebServer" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="400" y="120" width="110" height="220" as="geometry"/>
                 </mxCell>
-                <mxCell id="11" value="Manage" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-                    <mxGeometry x="497" y="120" width="173" height="200" as="geometry"/>
-                </mxCell>
-                <mxCell id="25" value="" style="endArrow=classic;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;startArrow=classic;startFill=1;" edge="1" parent="1" source="32" target="8">
+                <mxCell id="25" value="" style="endArrow=classic;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;startArrow=classic;startFill=1;" parent="1" source="32" target="8" edge="1">
                     <mxGeometry width="50" height="50" relative="1" as="geometry">
                         <mxPoint x="220" y="190" as="sourcePoint"/>
                         <mxPoint x="370" y="90" as="targetPoint"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="27" value="" style="endArrow=classic;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.013;exitY=0.717;exitDx=0;exitDy=0;exitPerimeter=0;startArrow=classic;startFill=1;" edge="1" parent="1" source="8" target="7">
-                    <mxGeometry width="50" height="50" relative="1" as="geometry">
-                        <mxPoint x="320" y="140" as="sourcePoint"/>
-                        <mxPoint x="370" y="90" as="targetPoint"/>
-                    </mxGeometry>
-                </mxCell>
-                <mxCell id="29" value="" style="endArrow=classic;startArrow=classic;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="8" target="11">
+                <mxCell id="29" value="" style="endArrow=classic;startArrow=classic;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="8" target="11" edge="1">
                     <mxGeometry width="50" height="50" relative="1" as="geometry">
                         <mxPoint x="447" y="260" as="sourcePoint"/>
                         <mxPoint x="497" y="210" as="targetPoint"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="30" value="" style="endArrow=classic;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="8">
-                    <mxGeometry width="50" height="50" relative="1" as="geometry">
-                        <mxPoint x="320" y="340" as="sourcePoint"/>
-                        <mxPoint x="460" y="360" as="targetPoint"/>
-                    </mxGeometry>
+                <mxCell id="32" value="GUI" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="80" y="130" width="120" height="90" as="geometry"/>
                 </mxCell>
-                <mxCell id="31" value="" style="endArrow=classic;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="11" target="10">
-                    <mxGeometry width="50" height="50" relative="1" as="geometry">
-                        <mxPoint x="320" y="340" as="sourcePoint"/>
-                        <mxPoint x="370" y="290" as="targetPoint"/>
-                    </mxGeometry>
+                <mxCell id="35" value="GUI： 实现界面显示，基于QT实现&#10;Hardware: 实现硬件操作。支持状态更新&#10;WorkFlow管理所有内部数据。并负责进程间交互，同时提供和远程交互的的接口&#10;LowBoard管理和其它设备的通讯&#10;WebServer:管理和服务器之间的通讯&#10;logger负责打印调试信息，支持远程logger和本地打印&#10;&#10;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="1" vertex="1">
+                    <mxGeometry x="50" y="670" width="440" height="90" as="geometry"/>
                 </mxCell>
-                <mxCell id="32" value="GUI" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-                    <mxGeometry x="80" y="130" width="140" height="170" as="geometry"/>
+                <mxCell id="36" value="Hardware" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="80" y="370" width="440" height="90" as="geometry"/>
                 </mxCell>
-                <mxCell id="33" value="" style="endArrow=classic;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" target="10">
-                    <mxGeometry width="50" height="50" relative="1" as="geometry">
-                        <mxPoint x="210" y="410" as="sourcePoint"/>
-                        <mxPoint x="370" y="240" as="targetPoint"/>
-                        <Array as="points">
-                            <mxPoint x="210" y="410"/>
-                        </Array>
-                    </mxGeometry>
+                <mxCell id="41" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=-0.008;entryY=0.803;entryDx=0;entryDy=0;entryPerimeter=0;startArrow=classic;startFill=1;" edge="1" parent="1" source="37" target="8">
+                    <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="34" value="" style="endArrow=classic;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="32" target="10">
-                    <mxGeometry width="50" height="50" relative="1" as="geometry">
-                        <mxPoint x="320" y="290" as="sourcePoint"/>
-                        <mxPoint x="370" y="240" as="targetPoint"/>
-                    </mxGeometry>
+                <mxCell id="37" value="LowBoard" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="80" y="250" width="120" height="90" as="geometry"/>
                 </mxCell>
-                <mxCell id="35" value="GUI： 实现界面显示，基于QT实现&#10;Hardware: 实现硬件操作。支持状态更新&#10;WorkFlow管理所有内部数据。并负责进程间交互，同时提供和远程交互的的接口&#10;Manage管理和其它设备的通讯&#10;logger负责打印调试信息，支持远程logger和本地打印&#10;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="1">
-                    <mxGeometry x="40" y="710" width="440" height="90" as="geometry"/>
+                <mxCell id="38" value="Logger" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="570" y="100" width="110" height="370" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>
