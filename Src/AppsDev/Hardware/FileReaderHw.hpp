@@ -6,7 +6,7 @@
 #pragma once
 #include "../Common/FileReader.hpp"
 
-#define HARDWART_JSON_DEFINE    "hardware.json"
+#define HARDWART_JSON_DEFINE    "HardwareConfig.json"
 
 namespace USR_READER
 {

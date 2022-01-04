@@ -1,6 +1,0 @@
-{
-    "LoggerServer":{
-        "ipaddr":"127.0.0.1",
-        "net_port":8000
-    }
-}
