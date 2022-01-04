@@ -96,6 +96,15 @@ namespace USR_DEVICE
         }
     }
 
+    uint8_t LED::Status(void)
+    {
+        if(pled != nullptr)
+        {
+            pled->read(&ledStatus, 1);
+        }
+        return ledStatus;
+    }
+
     void test_led_module(void)
     {
         USR_DEVICE::LED *pdev = new USR_DEVICE::LED();

@@ -38,10 +38,15 @@ namespace USR_DEVICE
         ///  - Called for Trigger the Led, Switch On or Off.
         /// \return NULL 
         void Trigger(void);
-    private:
-        uint8_t beepStatus;
+
+        /// \fn Status() 
+        ///  - get current beep status.
+        /// \return led on/off status  
+        uint8_t Status(void);
         
-        device *pbeep;
+    private:
+        uint8_t beepStatus{0};
+        device *pbeep{nullptr};
     };
 
     /// \fn test_led_module() 

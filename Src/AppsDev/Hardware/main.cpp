@@ -2,6 +2,8 @@
  * main.cpp
  *
  *  Created on: 2021 May 11 15:08:05
+ *  Manage Hardware
+ *  led, beep, key, rtc, i2c, spi, uart
  */
 
 #include "led.hpp"

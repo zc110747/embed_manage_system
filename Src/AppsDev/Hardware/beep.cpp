@@ -93,6 +93,15 @@ namespace USR_DEVICE
         }
     }
 
+    uint8_t BEEP::Status(void)
+    {
+        if(pbeep != nullptr)
+        {
+            pbeep->read(&beepStatus, 1);
+        }
+        return beepStatus;
+    }
+
     void test_beep_module(void)
     {
         USR_DEVICE::BEEP *pdev = new USR_DEVICE::BEEP();
