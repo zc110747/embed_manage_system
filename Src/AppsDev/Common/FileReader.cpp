@@ -21,7 +21,6 @@ FileReader::FileReader(string file)
     }
     else{
         is_vaild = true;
-        std::cout << root << std::endl;
         ifs.close();
     }
     filepath.swap(file);

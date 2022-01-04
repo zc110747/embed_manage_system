@@ -12,14 +12,18 @@ Objects = main.o \
 		device.o \
 		FileReaderHw.o \
 		../Common/FileReader.o \
+		led.o \
+		beep.o
+
+CurrentPath = $(shell pwd)
 
 StaticLibs = ../Common/ExternalPackages/libjason
 
-IncludePath = ../Common/
+IncludePath = -I $(CurrentPath)/../Common/
 
 # This is the file name of the executables and path where 
 # place the executables
-TargetFile = logger_event
+TargetFile = hw_process
 TargetFilePath = ../../Executables/
 
 # Including this file allows access to the Build System.

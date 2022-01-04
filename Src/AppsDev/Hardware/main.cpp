@@ -1,26 +1,15 @@
 /*
- * main.c
+ * main.cpp
  *
  *  Created on: 2021 May 11 15:08:05
  */
 
-#include "device.hpp"
-#include "FileReaderHw.hpp"
-#include <string.h>
-
+#include "led.hpp"
+#include "beep.hpp"
 
 int main(void)
 {
-    FileReaderHw *pReader = new FileReaderHw("hardware.json");
-    UartInfo Info;
-
-    if(pReader->get_uart_info(&Info))
-    {
-        std::cout<<Info.baud<<" "<<Info.databits<<" "<<Info.stopbits<<std::endl;
-        std::cout<<Info.parity<<std::endl;
-    }
-
-    delete pReader;
-    pReader = nullptr;
-    return 0;
+    USR_READER::test_file_reader();
+    USR_DEVICE::test_led_module();
+    USR_DEVICE::test_beep_module();
 }
