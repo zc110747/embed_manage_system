@@ -6,7 +6,8 @@
                 "${workspaceFolder}/**",
                 "${workspaceFolder}/Src/AppsDev/Common",
                 "${workspaceFolder}/Src/AppsDev/Gui",
-                "${workspaceFolder}/Src/AppsDev/Hardware"
+                "${workspaceFolder}/Src/AppsDev/Hardware",
+                "${workspaceFolder}/Src/AppsDev/Common/ExternalPackages/jsoncpp/include"
             ],
             "defines": [
                 "_DEBUG",

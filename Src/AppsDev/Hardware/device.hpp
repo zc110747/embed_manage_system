@@ -47,6 +47,11 @@ namespace USR_DEVICE
         /// \return true=process ok, false=process fail.
         bool ioctl(unsigned long int cmd, void *args);
 
+        /// \fn close() 
+        ///  - close the open device.
+        /// \return NULL
+        void close(void);
+
         /// \fn get_device_fd() 
         ///  - called for get the open device fd.
         /// \return the fd open by construct.
@@ -60,6 +65,10 @@ namespace USR_DEVICE
                 return true;
             return false;
         } 
+
+        std::string get_dev_name(void){
+            return dev_str;
+        }
 
     private:
         int device_fd;

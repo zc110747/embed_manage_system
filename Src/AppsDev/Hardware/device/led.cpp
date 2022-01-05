@@ -27,11 +27,8 @@ namespace USR_DEVICE
         else
             pled = nullptr;
 
-
-
         delete pReader;
         pReader = nullptr;
-
     }
 
     LED::LED(const string& device)

@@ -6,7 +6,7 @@
 #pragma once
 
 #include <string>
-#include "ExternalPackages/jsoncpp/include/json/json.h"
+#include "json/json.h"
 #include <iostream>
 
 using std::string;

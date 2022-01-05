@@ -4,7 +4,7 @@
  *  Created on: 2021 Dec 11 15:08:05
  */
 #pragma once
-#include "../Common/FileReader.hpp"
+#include "FileReader.hpp"
 
 #define HARDWART_JSON_DEFINE    "HardwareConfig.json"
 
@@ -95,6 +95,6 @@ namespace USR_READER
         bool get_beep_status(uint8_t *pStatus); 
     };
 
-    void test_file_reader(void);
+    void test_file_reader_hw(void);
 }
 

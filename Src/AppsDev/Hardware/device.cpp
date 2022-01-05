@@ -6,7 +6,9 @@
 
 #include "device.hpp"
 
-USR_DEVICE::device::device(std::string dev)
+namespace USR_DEVICE
+{
+    device::device(std::string dev)
 {
     dev_str = dev;
 
@@ -17,71 +19,81 @@ USR_DEVICE::device::device(std::string dev)
     }
 }
 
-USR_DEVICE::device::device(std::string dev, int flag, mode_t mode)
-{
-    device_fd = open(dev.c_str(), flag, mode);
-    if(device_fd < 0)
+    device::device(std::string dev, int flag, mode_t mode)
     {
-        printf("device driver %s open failed!\r\n", dev.c_str());
-    }
-}
-
-USR_DEVICE::device::~device()
-{
-    if(device_fd >= 0)
-        close(device_fd);
-}
-
-int USR_DEVICE::device::read(void *buf, size_t count)
-{
-    int nsize;
-
-    if(device_fd < 0)
-    {
-        printf("No vaild %s device!\r\n", dev_str.c_str());
-        return -1;
+        device_fd = open(dev.c_str(), flag, mode);
+        if(device_fd < 0)
+        {
+            printf("device driver %s open failed!\r\n", dev.c_str());
+        }
     }
 
-    nsize = ::read(device_fd, buf, count);
-    if(nsize < 0)
+    device::~device()
     {
-        printf("%s device read error!\r\n", dev_str.c_str());
-    }
-    return nsize;
-}
-
-int USR_DEVICE::device::write(const void *buf, size_t count)
-{
-    int nsize;
-
-    if(device_fd < 0)
-    {
-        printf("No vaild %s device!\r\n", dev_str.c_str());
-        return -1;
+        if(device_fd >= 0)
+            ::close(device_fd);
     }
 
-    nsize = ::write(device_fd, buf, count);
-    if(nsize < 0)
+    int device::read(void *buf, size_t count)
     {
-        printf("%s device write error!\r\n", dev_str.c_str());
+        int nsize;
+
+        if(device_fd < 0)
+        {
+            printf("No vaild %s device!\r\n", dev_str.c_str());
+            return -1;
+        }
+
+        nsize = ::read(device_fd, buf, count);
+        if(nsize < 0)
+        {
+            printf("%s device read error!\r\n", dev_str.c_str());
+        }
+        return nsize;
     }
-    return nsize;
-}
 
-bool USR_DEVICE::device::ioctl(unsigned long int cmd, void *args)
-{
-    int nsize = 0;
-
-    if(device_fd < 0)
+    void device::close(void)
     {
-        printf("No vaild %s device!\r\n", dev_str.c_str());
-        return -1;
+        if(device_fd >= 0)
+        {
+            ::close(device_fd);
+            device_fd = -1;
+        }
     }
 
-    //nsize = ::ioctl(device_fd, cmd, args);
-    if(nsize < 0)
+    int device::write(const void *buf, size_t count)
     {
-        printf("%s device ioctl error!\r\n", dev_str.c_str());
+        int nsize;
+
+        if(device_fd < 0)
+        {
+            printf("No vaild %s device!\r\n", dev_str.c_str());
+            return -1;
+        }
+
+        nsize = ::write(device_fd, buf, count);
+        if(nsize < 0)
+        {
+            printf("%s device write error!\r\n", dev_str.c_str());
+        }
+        return nsize;
     }
-    return nsize;
+
+    bool device::ioctl(unsigned long int cmd, void *args)
+    {
+        int nsize = 0;
+
+        if(device_fd < 0)
+        {
+            printf("No vaild %s device!\r\n", dev_str.c_str());
+            return -1;
+        }
+
+        //nsize = ::ioctl(device_fd, cmd, args);
+        if(nsize < 0)
+        {
+            printf("%s device ioctl error!\r\n", dev_str.c_str());
+        }
+        return nsize;
+    }
 }

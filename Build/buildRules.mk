@@ -16,7 +16,7 @@ CFLAGS  := -O3 -std=c++11 -lpthread
 all : $(TargetFile)
 
 %.o : %.cpp
-	$(CC) $(CFLAGS) -c $< -o $@ $(IncludePath)
+	$(CC) $(CFLAGS) -c $< $(IncludePath) -o $@ 
 
 $(TargetFile): $(Objects)
 	$(CC) -o $(TargetFile) $(Objects) $(StaticLibs) $(CFLAGS)

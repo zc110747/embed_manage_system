@@ -156,7 +156,7 @@ namespace USR_READER
     }
 
     //test for fileReadHw
-    void test_file_reader(void)
+    void test_file_reader_hw(void)
     {
         FileReaderHw *pReader = new FileReaderHw(HARDWART_JSON_DEFINE);
         UartInfo UartInfo;
