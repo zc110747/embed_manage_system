@@ -11,9 +11,11 @@
 Objects = main.o \
 		device.o \
 		FileReaderHw.o \
-		../Common/FileReader.o \
 		led.o \
-		beep.o
+		beep.o \
+		HwManageThread.o \
+		../Common/FileReader.o \
+		../Common/gThread.o
 
 CurrentPath = $(shell pwd)
 
