@@ -24,9 +24,9 @@ int main(void)
 #if MODULE_TEST == 1
     module_test();
 #endif
-    HwManageThread *pThread;
+    HwManageThread<> *pThread;
 
-    pThread = new HwManageThread("Hardware");
+    pThread = new HwManageThread<>("Hardware");
     pThread->Start();
 
     HW_MainLoop();

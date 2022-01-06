@@ -15,7 +15,6 @@ Objects = main.o \
 		device/beep.o \
 		device/ApI2c.o \
 		device/IcmSpi.o \
-		HwManageThread.o \
 		../Common/FileReader.o \
 		../Common/gThread.o
 
