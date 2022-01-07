@@ -12,15 +12,15 @@ namespace USR_DEVICE
     ICMSPI::ICMSPI(void)
     {
         string SPI_dev;
-        FileReaderHw *pReader = new FileReaderHw(HARDWART_JSON_DEFINE);
+        FileProcessHw *pReader = new FileProcessHw(HARDWART_JSON_DEFINE);
 
         if(pReader->get_spi_device(&SPI_dev))
         {
             std::cout<<SPI_dev<<std::endl;
-            pIcmSpi = new USR_DEVICE::device(SPI_dev);
+            pdev = new USR_DEVICE::device(SPI_dev);
         }
         else
-            pIcmSpi = nullptr;
+            pdev = nullptr;
 
         delete pReader;
         pReader = nullptr;
@@ -29,15 +29,15 @@ namespace USR_DEVICE
     ICMSPI::ICMSPI(const string& device)
     {
         string SPI_dev;
-        FileReaderHw *pReader = new FileReaderHw(HARDWART_JSON_DEFINE);
+        FileProcessHw *pReader = new FileProcessHw(HARDWART_JSON_DEFINE);
 
         if(pReader->get_device_info(&SPI_dev, device))
         {
             std::cout<<SPI_dev<<std::endl;
-            pIcmSpi = new USR_DEVICE::device(SPI_dev);
+            pdev = new USR_DEVICE::device(SPI_dev);
         }
         else
-            pIcmSpi = nullptr;
+            pdev = nullptr;
 
         delete pReader;
         pReader = nullptr;
@@ -45,10 +45,10 @@ namespace USR_DEVICE
 
     ICMSPI::~ICMSPI(void)
     {
-        if(pIcmSpi != nullptr)
+        if(pdev != nullptr)
         {
-            delete pIcmSpi;
-            pIcmSpi = nullptr;
+            delete pdev;
+            pdev = nullptr;
         }
     }
 
@@ -57,7 +57,7 @@ namespace USR_DEVICE
         char *pBuf;
 
         pBuf = (char *)&m_info;
-        if(pIcmSpi->read((char *)pBuf, sizeof(m_info)) > 0)
+        if(pdev->read((char *)pBuf, sizeof(m_info)) > 0)
         {
             printf("\r\n原始值:\r\n");
             printf("gx = %d, gy = %d, gz = %d\r\n", m_info.gyro_x_adc, 
@@ -68,7 +68,7 @@ namespace USR_DEVICE
         }
         else
         {
-            printf("device %s read failed!\r\n", pIcmSpi->get_dev_name().c_str());
+            printf("device %s read failed!\r\n", pdev->get_dev_name().c_str());
         }
     }
 

@@ -12,15 +12,15 @@ namespace USR_DEVICE
     API2C::API2C(void)
     {
         string I2C_dev;
-        FileReaderHw *pReader = new FileReaderHw(HARDWART_JSON_DEFINE);
+        FileProcessHw *pReader = new FileProcessHw(HARDWART_JSON_DEFINE);
 
         if(pReader->get_i2c_device(&I2C_dev))
         {
             std::cout<<I2C_dev<<std::endl;
-            pApI2c = new USR_DEVICE::device(I2C_dev);
+            pdev = new USR_DEVICE::device(I2C_dev);
         }
         else
-            pApI2c = nullptr;
+            pdev = nullptr;
 
         delete pReader;
         pReader = nullptr;
@@ -29,15 +29,15 @@ namespace USR_DEVICE
     API2C::API2C(const string& device)
     {
         string I2C_dev;
-        FileReaderHw *pReader = new FileReaderHw(HARDWART_JSON_DEFINE);
+        FileProcessHw *pReader = new FileProcessHw(HARDWART_JSON_DEFINE);
 
         if(pReader->get_device_info(&I2C_dev, device))
         {
             std::cout<<I2C_dev<<std::endl;
-            pApI2c = new USR_DEVICE::device(I2C_dev);
+            pdev = new USR_DEVICE::device(I2C_dev);
         }
         else
-            pApI2c = nullptr;
+            pdev = nullptr;
 
         delete pReader;
         pReader = nullptr;
@@ -45,10 +45,10 @@ namespace USR_DEVICE
 
     API2C::~API2C(void)
     {
-        if(pApI2c != nullptr)
+        if(pdev != nullptr)
         {
-            delete pApI2c;
-            pApI2c = nullptr;
+            delete pdev;
+            pdev = nullptr;
         }
     }
 
@@ -57,7 +57,7 @@ namespace USR_DEVICE
         char *pBuf;
 
         pBuf = (char *)&m_info;
-        if(pApI2c->read((char *)pBuf, sizeof(m_info)) > 0)
+        if(pdev->read((char *)pBuf, sizeof(m_info)) > 0)
         {
             printf("\r\n原始值:\r\n");
 			printf("ir = %d, als = %d, ps = %d\r\n", m_info.ir, 
@@ -65,7 +65,7 @@ namespace USR_DEVICE
         }
         else
         {
-            printf("device %s read failed!\r\n", pApI2c->get_dev_name().c_str());
+            printf("device %s read failed!\r\n", pdev->get_dev_name().c_str());
         }
     }
 

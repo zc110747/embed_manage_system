@@ -1,10 +1,10 @@
 /*
- * FileReaderHw.hpp
+ * FileProcessHw.hpp
  *
  *  Created on: 2021 Dec 11 15:08:05
  */
 #pragma once
-#include "FileReader.hpp"
+#include "FileProcess.hpp"
 
 #define HARDWART_JSON_DEFINE    "HardwareConfig.json"
 
@@ -27,17 +27,37 @@ namespace USR_READER
         string parity;
     };
 
-    class FileReaderHw : public FileReader
+    struct DevInfo
+    {
+        std::string Serial;
+        std::string Led;
+        std::string Beep;
+        std::string IcmSpi;
+        std::string Led;       
+        std::string ApI2c;
+        std::string Led0;
+        std::string Beep0;
+    };
+
+    struct DefaultStatus
+    {
+        int led;
+        int beep;
+        int led0;
+        int led1;
+    }
+
+    class FileProcessHw : public FileProcess
     {
     public:
         /// - 
     	  ///constructor
-        FileReaderHw(string file):FileReader(file){
+        FileProcessHw(string file):FileProcess(file){
         }
 
         /// - 
     	  ///destructor
-        ~FileReaderHw(){};
+        ~FileProcessHw(){};
 
       	/// \fn get_device_info() 
         ///  - This method is called for getting device's string info from json structure.
@@ -93,6 +113,12 @@ namespace USR_READER
         ///  - called for get beep device string.
         /// \return true=do success, false=no device status
         bool get_beep_status(uint8_t *pStatus); 
+
+    private:
+        struct UartInfo m_uart;
+        struct DevInfo  m_device;
+        struct DefaultStatus m_status;
+        std::string 
     };
 
     void test_file_reader_hw(void);

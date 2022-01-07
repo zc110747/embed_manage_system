@@ -13,19 +13,19 @@ namespace USR_DEVICE
     BEEP::BEEP(void)
     {
         string beep_device;
-        FileReaderHw *pReader = new FileReaderHw(HARDWART_JSON_DEFINE);
+        FileProcessHw *pReader = new FileProcessHw(HARDWART_JSON_DEFINE);
 
         if(pReader->get_beep_device(&beep_device))
         {
             std::cout<<beep_device<<std::endl;
-            pbeep = new USR_DEVICE::device(beep_device);
+            pdev = new USR_DEVICE::device(beep_device);
             if(pReader->get_beep_status(&beepStatus))
             {
-                pbeep->write(&beepStatus, 1);
+                pdev->write(&beepStatus, 1);
             }
         }
         else
-            pbeep = nullptr;
+            pdev = nullptr;
 
         delete pReader;
         pReader = nullptr;
@@ -34,19 +34,19 @@ namespace USR_DEVICE
     BEEP::BEEP(const string& device)
     {
         string beep_device;
-        FileReaderHw *pReader = new FileReaderHw(HARDWART_JSON_DEFINE);
+        FileProcessHw *pReader = new FileProcessHw(HARDWART_JSON_DEFINE);
 
         if(pReader->get_device_info(&beep_device, device))
         {
             std::cout<<beep_device<<std::endl;
-            pbeep = new USR_DEVICE::device(beep_device);
+            pdev = new USR_DEVICE::device(beep_device);
             if(pReader->get_default_status(&beepStatus, device))
             {
-                pbeep->write(&beepStatus, 1);
+                pdev->write(&beepStatus, 1);
             }
         }
         else
-            pbeep = nullptr;
+            pdev = nullptr;
 
         delete pReader;
         pReader = nullptr;
@@ -54,50 +54,50 @@ namespace USR_DEVICE
 
     BEEP::~BEEP(void)
     {
-        if(pbeep != nullptr)
+        if(pdev != nullptr)
         {
-            delete pbeep;
-            pbeep = nullptr;
+            delete pdev;
+            pdev = nullptr;
         }
     }
 
     void BEEP::On(void)
     {
-        if(pbeep != nullptr)
+        if(pdev != nullptr)
         {
             beepStatus = 0;
-            pbeep->write(&beepStatus, 1);
+            pdev->write(&beepStatus, 1);
         }
 
     }
 
     void BEEP::Off(void)
     {
-        if(pbeep != nullptr)
+        if(pdev != nullptr)
         {
             beepStatus = 1;
-            pbeep->write(&beepStatus, 1);
+            pdev->write(&beepStatus, 1);
         }
     }
 
     void BEEP::Trigger(void)
     {
-        if(pbeep != nullptr)
+        if(pdev != nullptr)
         {
             if(beepStatus == 0)
                 beepStatus = 1;
             else
                 beepStatus = 0;
 
-            pbeep->write(&beepStatus, 1);
+            pdev->write(&beepStatus, 1);
         }
     }
 
     uint8_t BEEP::Status(void)
     {
-        if(pbeep != nullptr)
+        if(pdev != nullptr)
         {
-            pbeep->read(&beepStatus, 1);
+            pdev->read(&beepStatus, 1);
         }
         return beepStatus;
     }

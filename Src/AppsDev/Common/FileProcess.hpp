@@ -1,5 +1,5 @@
 /*
- * FileReader.hpp
+ * FileProcess.hpp
  *
  *  Created on: 2021 Dec 11 15:08:05
  */
@@ -8,19 +8,20 @@
 #include <string>
 #include "json/json.h"
 #include <iostream>
+#include <ostream>
 
 using std::string;
 
-class FileReader
+class FileProcess
 {
 public:
     /// - 
     ///constructor
-    FileReader(string file);
+    FileProcess(string file);
 
     /// - 
     ///destructor
-    ~FileReader();
+    ~FileProcess();
 
     /// \fn get_file_path() 
     ///  - called for get reader file name.
@@ -35,15 +36,25 @@ public:
     bool is_reader_valid(void){
         return is_vaild;
     }
-    
+
 protected:
-    Json::Value root;
+    Json::Value Reader;
+    Json::Value Writer;
 
     /// \fn get_json_member() 
     ///  - get json member through the string member name.
     /// \return true=read member success, false=read member fail.
     bool get_json_member(string member, Json::Value *pIn, Json::Value *pOut);
 
+    /// \fn reader() 
+    ///  - called for get reader 
+    /// \return true=reader valid, false=reader invalid.
+    void reader(void);
+
+    /// \fn writer() 
+    ///  - called for get reader 
+    /// \return true=reader valid, false=reader invalid.
+    void writer(void);
 private:
     string filepath;
     bool is_vaild;
