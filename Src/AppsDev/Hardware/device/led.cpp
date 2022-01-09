@@ -76,7 +76,7 @@ namespace USR_DEVICE
         if(pdev != nullptr)
         {
             ledStatus = 1;
-            pdev->write(&ledStatus, 1);
+            pdev->write(&ledStatus, 0);
         }
     }
 

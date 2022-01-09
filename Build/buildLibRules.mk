@@ -8,7 +8,7 @@
 
 # this place define the compile and flags, CC complie should be g++ and 
 # option could be add in place
-CC = g++
+CC := g++
 CFLAGS  := -O3 -std=c++11 -lpthread
 
 # this is the rule how to complie file with type .cpp to middle file .o 
