@@ -5,7 +5,7 @@
  */
 #pragma once
 #include "device.hpp"
-#include "FileReaderHw.hpp"
+#include "FileProcessHw.hpp"
 
 namespace USR_DEVICE
 {
@@ -45,8 +45,8 @@ namespace USR_DEVICE
         uint8_t Status(void);
         
     private:
-        uint8_t ledStatus{0};
-        device *pled{nullptr};
+        int ledStatus{0};
+        device *pdev{nullptr};
     };
 
     /// \fn test_led_module() 

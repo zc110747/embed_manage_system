@@ -40,6 +40,16 @@ private:
     USR_DEVICE::BEEP *prvBeep;
     USR_DEVICE::API2C *prvAp;
     USR_DEVICE::ICMSPI *prvIcm;
+
+    /// \fn create_device_object() 
+    ///  create device used by thread
+    /// \return NULL
+    void create_device_object(void);
+
+    /// \fn release_device_object() 
+    ///  release device and memory
+    /// \return NULL
+    void release_device_object(void);
 };
 
 template<typename T>
@@ -47,11 +57,6 @@ HwManageThread<T>::HwManageThread(std::string ThreadName):
     gThread()
 {
     m_exit_flag = 0;
-    prvLed = new USR_DEVICE::LED();
-    prvBeep = new USR_DEVICE::BEEP();
-    prvAp = new USR_DEVICE::API2C();
-    prvIcm = new USR_DEVICE::ICMSPI();
-
     SetThreadName(ThreadName);
 }
 
@@ -65,20 +70,13 @@ HwManageThread<T>::HwManageThread(std::string ThreadName, T parameter):
 template<typename T>
 HwManageThread<T>::~HwManageThread()
 {
-    if(prvLed){
-        delete prvLed;
-        prvLed = nullptr;
-    }
-
-    if(prvBeep){
-        delete prvBeep;
-        prvBeep = nullptr;
-    }
 }
 
 template<typename T>
 bool HwManageThread<T>::Tmain(void)
 {
+    create_device_object();
+
     while(!m_exit_flag)
     {
         prvLed->On();
@@ -96,6 +94,41 @@ bool HwManageThread<T>::Tmain(void)
         prvIcm->update();
     }
 
+    release_device_object();
+
     m_finished = 1;
     return true;
+}
+
+template<typename T>
+void HwManageThread<T>::create_device_object(void)
+{
+    prvLed = new USR_DEVICE::LED();
+    prvBeep = new USR_DEVICE::BEEP();
+    prvAp = new USR_DEVICE::API2C();
+    prvIcm = new USR_DEVICE::ICMSPI();
+}
+
+template<typename T>
+void HwManageThread<T>::release_device_object(void)
+{
+    if(prvLed){
+        delete prvLed;
+        prvLed = nullptr;
+    }
+
+    if(prvBeep){
+        delete prvBeep;
+        prvBeep = nullptr;
+    }
+
+    if(prvAp){
+        delete prvAp;
+        prvAp = nullptr;
+    }
+
+    if(prvIcm){
+        delete prvIcm;
+        prvIcm = nullptr;
+    }
 }

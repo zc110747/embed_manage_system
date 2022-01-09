@@ -12,7 +12,7 @@
  */
 #include "HwManageThread.hpp"
 
-#define MODULE_TEST 0
+#define MODULE_TEST 1
 
 int g_main_exit_flag;
 

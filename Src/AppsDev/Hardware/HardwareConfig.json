@@ -1,24 +1,27 @@
-{       
-        "Uart":{
-                "Baud":115200,
-                "DataBits":8,
-                "StopBits":1,
-                "Parity":"n"
-        },
-        "Device":{
-                "Serial":"/dev/ttymxc2",
-                "Led":"/dev/led",
-                "Beep":"/dev/beep",
-                "IcmSpi":"/dev/icm20608",
-                "Rtc":"/dev/rtc0",
-                "ApI2c":"/dev/ap3216",
-                "Led0":"/dev/led0",
-                "Beep0":"/dev/beep0"
-        },
-        "Default":{
-                "Led":1,
-                "Beep":0,
-                "Led0":1,
-                "Beep0":1
-        }
+{
+	"Default" : 
+	{
+		"Beep" : 0,
+		"Beep0" : 0,
+		"Led" : 1,
+		"Led0" : 0
+	},
+	"Device" : 
+	{
+		"ApI2c" : "/dev/ap3216",
+		"Beep" : "/dev/beep",
+		"Beep0" : "",
+		"IcmSpi" : "/dev/icm20608",
+		"Led" : "/dev/led",
+		"Led0" : "",
+		"Rtc" : "/dev/rtc0",
+		"Serial" : "/dev/ttymxc2"
+	},
+	"Uart" : 
+	{
+		"Baud" : 115200,
+		"DataBits" : 8,
+		"Parity" : "n",
+		"StopBits" : 1
+	}
 }

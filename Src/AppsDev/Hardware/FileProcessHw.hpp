@@ -1,10 +1,10 @@
 /*
- * FileReaderHw.hpp
+ * FileProcessHw.hpp
  *
  *  Created on: 2021 Dec 11 15:08:05
  */
 #pragma once
-#include "FileReader.hpp"
+#include "FileProcess.hpp"
 
 #define HARDWART_JSON_DEFINE    "HardwareConfig.json"
 
@@ -27,17 +27,37 @@ namespace USR_READER
         string parity;
     };
 
-    class FileReaderHw : public FileReader
+    struct DevInfo
+    {
+        std::string Serial;
+        std::string Led;
+        std::string Beep;
+        std::string IcmSpi;
+        std::string Rtc;      
+        std::string ApI2c;
+        std::string Led0;
+        std::string Beep0;
+    };
+
+    struct DefaultStatus
+    {
+        int led;
+        int beep;
+        int led0;
+        int beep0;
+    };
+
+    class FileProcessHw : public FileProcess
     {
     public:
         /// - 
     	  ///constructor
-        FileReaderHw(string file):FileReader(file){
+        FileProcessHw(string file):FileProcess(file){
         }
 
         /// - 
     	  ///destructor
-        ~FileReaderHw(){};
+        ~FileProcessHw(){};
 
       	/// \fn get_device_info() 
         ///  - This method is called for getting device's string info from json structure.
@@ -47,7 +67,7 @@ namespace USR_READER
       	/// \fn get_default_status() 
         ///  - This method is called for getting device's default status from json structure.
         /// \return true=do success, false=no device string
-        bool get_default_status(uint8_t *pStatus, const string& device);
+        bool get_default_status(int *pStatus, const string& device);
 
       	/// \fn get_uart_info() 
         ///  - called for get uart infomation.
@@ -87,12 +107,21 @@ namespace USR_READER
       	/// \fn get_led_status() 
         ///  - called for get led device status.
         /// \return true=do success, false=no device status
-        bool get_led_status(uint8_t *pStatus);
+        bool get_led_status(int *pStatus);
 
       	/// \fn get_beep_status() 
         ///  - called for get beep device string.
         /// \return true=do success, false=no device status
-        bool get_beep_status(uint8_t *pStatus); 
+        bool get_beep_status(int *pStatus); 
+
+        /// \fn update_writer_value() 
+        ///  - create and write files
+        /// \return NULL
+        void update_writer_value(void);
+    private:
+        struct UartInfo m_uart;
+        struct DevInfo  m_device;
+        struct DefaultStatus m_status;
     };
 
     void test_file_reader_hw(void);
