@@ -1,22 +1,24 @@
 /*
- * FileReaderHw.cpp
+ * FileProcessHw.cpp
  *
  *  Created on: 2021 Dec 11 15:08:05
  */
 
-#include "FileReaderHw.hpp"
+#include "FileProcessHw.hpp"
 
 namespace USR_READER
 {
-    bool FileReaderHw::get_uart_info(UartInfo *pInfo)
+    bool FileProcessHw::get_uart_info(UartInfo *pInfo)
     {
         Json::Value UartMember;
+
+        reader();
 
         if((!is_reader_valid()) || (pInfo == nullptr)){
             return false;
         }
 
-        if(get_json_member("Uart", &root, &UartMember))
+        if(get_json_member("Uart", &Reader, &UartMember))
         {
             bool is_error = false;
             Json::Value MemberValue;
@@ -47,67 +49,85 @@ namespace USR_READER
             }
             else
             {
+                m_uart.baud = pInfo->baud;
+                m_uart.databits = pInfo->databits;
+                m_uart.stopbits = pInfo->stopbits;
+                m_uart.parity = pInfo->parity;
                 return true;
             }
         }
         else
         {
-            printf("Json Value root have Invalid member %s!\r\n", "Uart");
+            printf("Json Value Reader have Invalid member %s!\r\n", "Uart");
             return false;
         }
 
         return true;
     }
 
-    bool FileReaderHw::get_led_device(string *pInfo)
+    bool FileProcessHw::get_led_device(string *pInfo)
     {
-        return get_device_info(pInfo, "Led");
+        bool status;
+
+        status = get_device_info(pInfo, "Led");
+        if(status)
+            m_device.Led = *pInfo;
+
+        return status;
     }
 
-    bool FileReaderHw::get_serial_device(string *pInfo)
+    bool FileProcessHw::get_serial_device(string *pInfo)
     {
-        return get_device_info(pInfo, "Serial");
+        bool status;
+
+        status = get_device_info(pInfo, "Serial");
+        if(status)
+            m_device.Serial = *pInfo;
+
+        return status;
     }
 
-    bool FileReaderHw::get_beep_device(string *pInfo)
+    bool FileProcessHw::get_beep_device(string *pInfo)
     {
         return get_device_info(pInfo, "Beep");
     }
 
-    bool FileReaderHw::get_spi_device(string *pInfo)
+    bool FileProcessHw::get_spi_device(string *pInfo)
     {
         return get_device_info(pInfo, "IcmSpi");
     }
 
-    bool FileReaderHw::get_rtc_device(string *pInfo)
+    bool FileProcessHw::get_rtc_device(string *pInfo)
     {
         return get_device_info(pInfo, "Rtc");
     }
 
-    bool FileReaderHw::get_i2c_device(string *pInfo)
+    bool FileProcessHw::get_i2c_device(string *pInfo)
     {
         return get_device_info(pInfo, "ApI2c"); 
     }
 
-    bool FileReaderHw::get_led_status(uint8_t *pStatus)
+    bool FileProcessHw::get_led_status(uint8_t *pStatus)
     {
         return get_default_status(pStatus, "Led"); 
     }
 
-    bool FileReaderHw::get_beep_status(uint8_t *pStatus)
+    bool FileProcessHw::get_beep_status(uint8_t *pStatus)
     {
         return get_default_status(pStatus, "Beep"); 
     }
 
-    bool FileReaderHw::get_device_info(string *pInfo, const string& device)
+    bool FileProcessHw::get_device_info(string *pInfo, const string& device)
     {
         Json::Value DeviceMember;
+
+        reader();
 
         if((!is_reader_valid()) || (pInfo == nullptr)){
             return false;
         }
 
-        if(get_json_member("Device", &root, &DeviceMember))
+        if(get_json_member("Device", &Reader, &DeviceMember))
         {
             Json::Value MemberValue;
 
@@ -121,21 +141,23 @@ namespace USR_READER
         } 
         else
         {
-            printf("Json Value root have Invalid member %s!\r\n", "Device");
+            printf("Json Value Reader have Invalid member %s!\r\n", "Device");
             return false;
         }
         return true;
     }
 
-    bool FileReaderHw::get_default_status(uint8_t *pStatus, const string& device)
+    bool FileProcessHw::get_default_status(uint8_t *pStatus, const string& device)
     {
         Json::Value StatusMember;
+
+        reader();
 
         if((!is_reader_valid()) || (pStatus == nullptr)){
             return false;
         }
 
-        if(get_json_member("Default", &root, &StatusMember))
+        if(get_json_member("Default", &Reader, &StatusMember))
         {
             Json::Value MemberValue;
 
@@ -149,7 +171,7 @@ namespace USR_READER
         } 
         else
         {
-            printf("Json Value root have Invalid member %s!\r\n", "Default");
+            printf("Json Value Reader have Invalid member %s!\r\n", "Default");
             return false;
         }
         return true;
@@ -158,7 +180,7 @@ namespace USR_READER
     //test for fileReadHw
     void test_file_reader_hw(void)
     {
-        FileReaderHw *pReader = new FileReaderHw(HARDWART_JSON_DEFINE);
+        FileProcessHw *pReader = new FileProcessHw(HARDWART_JSON_DEFINE);
         UartInfo UartInfo;
         string DeviceStr;
         uint8_t DeviceStatus;

@@ -9,14 +9,13 @@
 # This is object should be build and will link to generate
 # the executables
 Objects = main.o \
-		device.o \
-		FileReaderHw.o \
+		FileProcessHw.o \
+		device/device.o \
 		device/led.o \
 		device/beep.o \
 		device/ApI2c.o \
 		device/IcmSpi.o \
-		HwManageThread.o \
-		../Common/FileReader.o \
+		../Common/FileProcess.o \
 		../Common/gThread.o
 
 CurrentPath = $(shell pwd)

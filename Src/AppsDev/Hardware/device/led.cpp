@@ -13,19 +13,19 @@ namespace USR_DEVICE
     LED::LED(void)
     {
         string led_device;
-        FileReaderHw *pReader = new FileReaderHw(HARDWART_JSON_DEFINE);
+        FileProcessHw *pReader = new FileProcessHw(HARDWART_JSON_DEFINE);
 
         if(pReader->get_led_device(&led_device))
         {
             std::cout<<led_device<<std::endl;
-            pled = new USR_DEVICE::device(led_device);
+            pdev = new USR_DEVICE::device(led_device);
             if(pReader->get_led_status(&ledStatus))
             {
-                pled->write(&ledStatus, 1);
+                pdev->write(&ledStatus, 1);
             }
         }
         else
-            pled = nullptr;
+            pdev = nullptr;
 
         delete pReader;
         pReader = nullptr;
@@ -34,19 +34,19 @@ namespace USR_DEVICE
     LED::LED(const string& device)
     {
         string led_device;
-        FileReaderHw *pReader = new FileReaderHw(HARDWART_JSON_DEFINE);
+        FileProcessHw *pReader = new FileProcessHw(HARDWART_JSON_DEFINE);
 
         if(pReader->get_device_info(&led_device, device))
         {
             std::cout<<led_device<<std::endl;
-            pled = new USR_DEVICE::device(led_device);
+            pdev = new USR_DEVICE::device(led_device);
             if(pReader->get_default_status(&ledStatus, device))
             {
-                pled->write(&ledStatus, 1);
+                pdev->write(&ledStatus, 1);
             }
         }
         else
-            pled = nullptr;
+            pdev = nullptr;
 
         delete pReader;
         pReader = nullptr;
@@ -54,50 +54,50 @@ namespace USR_DEVICE
 
     LED::~LED(void)
     {
-        if(pled != nullptr)
+        if(pdev != nullptr)
         {
-            delete pled;
-            pled = nullptr;
+            delete pdev;
+            pdev = nullptr;
         }
     }
 
     void LED::On(void)
     {
-        if(pled != nullptr)
+        if(pdev != nullptr)
         {
             ledStatus = 0;
-            pled->write(&ledStatus, 1);
+            pdev->write(&ledStatus, 1);
         }
 
     }
 
     void LED::Off(void)
     {
-        if(pled != nullptr)
+        if(pdev != nullptr)
         {
             ledStatus = 1;
-            pled->write(&ledStatus, 1);
+            pdev->write(&ledStatus, 1);
         }
     }
 
     void LED::Trigger(void)
     {
-        if(pled != nullptr)
+        if(pdev != nullptr)
         {
             if(ledStatus == 0)
                 ledStatus = 1;
             else
                 ledStatus = 0;
 
-            pled->write(&ledStatus, 1);
+            pdev->write(&ledStatus, 1);
         }
     }
 
     uint8_t LED::Status(void)
     {
-        if(pled != nullptr)
+        if(pdev != nullptr)
         {
-            pled->read(&ledStatus, 1);
+            pdev->read(&ledStatus, 1);
         }
         return ledStatus;
     }

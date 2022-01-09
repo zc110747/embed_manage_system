@@ -6,7 +6,7 @@
 #pragma once
 
 #include "device.hpp"
-#include "FileReaderHw.hpp"
+#include "FileProcessHw.hpp"
 
 namespace USR_DEVICE
 {
@@ -49,7 +49,7 @@ namespace USR_DEVICE
     private:
         struct SApInfo m_info;
 
-        device *pApI2c{nullptr};
+        device *pdev{nullptr};
     };
 
     /// \fn test_ap_i2c_module() 

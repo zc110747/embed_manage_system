@@ -6,7 +6,7 @@
 #pragma once
 
 #include "device.hpp"
-#include "FileReaderHw.hpp"
+#include "FileProcessHw.hpp"
 
 namespace USR_DEVICE
 {
@@ -64,7 +64,7 @@ namespace USR_DEVICE
     private:
         struct SIcmInfo m_info;
 
-        device *pIcmSpi{nullptr};
+        device *pdev{nullptr};
     };
 
     /// \fn test_icm_spi_module() 
