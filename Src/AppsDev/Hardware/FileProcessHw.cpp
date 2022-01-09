@@ -89,32 +89,68 @@ namespace USR_READER
 
     bool FileProcessHw::get_beep_device(string *pInfo)
     {
-        return get_device_info(pInfo, "Beep");
+        bool status;    
+
+        status = get_device_info(pInfo, "Beep");
+        if(status)
+            m_device.Beep = *pInfo;
+
+        return status;
     }
 
     bool FileProcessHw::get_spi_device(string *pInfo)
     {
-        return get_device_info(pInfo, "IcmSpi");
+        bool status;    
+
+        status = get_device_info(pInfo, "IcmSpi");
+        if(status)
+            m_device.IcmSpi = *pInfo;
+
+        return status;
     }
 
     bool FileProcessHw::get_rtc_device(string *pInfo)
     {
-        return get_device_info(pInfo, "Rtc");
+        bool status;    
+
+        status = get_device_info(pInfo, "Rtc");
+        if(status)
+            m_device.Rtc = *pInfo;
+
+        return status;
     }
 
     bool FileProcessHw::get_i2c_device(string *pInfo)
     {
-        return get_device_info(pInfo, "ApI2c"); 
+        bool status;    
+
+        status = get_device_info(pInfo, "ApI2c");
+        if(status)
+            m_device.ApI2c = *pInfo;
+
+        return status;
     }
 
-    bool FileProcessHw::get_led_status(uint8_t *pStatus)
+    bool FileProcessHw::get_led_status(int *pStatus)
     {
-        return get_default_status(pStatus, "Led"); 
+        bool status;    
+
+        status = get_default_status(pStatus, "Led");
+        if(status)
+            m_status.led = *pStatus;
+
+        return status;
     }
 
-    bool FileProcessHw::get_beep_status(uint8_t *pStatus)
+    bool FileProcessHw::get_beep_status(int *pStatus)
     {
-        return get_default_status(pStatus, "Beep"); 
+        bool status;    
+
+        status = get_default_status(pStatus, "Beep");
+        if(status)
+            m_status.beep = *pStatus;
+
+        return status;
     }
 
     bool FileProcessHw::get_device_info(string *pInfo, const string& device)
@@ -132,7 +168,7 @@ namespace USR_READER
             Json::Value MemberValue;
 
             if(get_json_member(device, &DeviceMember, &MemberValue))
-                *pInfo = MemberValue.asString();
+                *pInfo = MemberValue.isString()?MemberValue.asString():string();
             else
             {
                 printf("Json Value MemberValue have Invalid members %s!\r\n", device.c_str());
@@ -147,7 +183,7 @@ namespace USR_READER
         return true;
     }
 
-    bool FileProcessHw::get_default_status(uint8_t *pStatus, const string& device)
+    bool FileProcessHw::get_default_status(int *pStatus, const string& device)
     {
         Json::Value StatusMember;
 
@@ -162,7 +198,7 @@ namespace USR_READER
             Json::Value MemberValue;
 
             if(get_json_member(device, &StatusMember, &MemberValue))
-                *pStatus = MemberValue.asInt();
+                *pStatus = MemberValue.isInt()?MemberValue.asInt():0;
             else
             {
                 printf("Json Value MemberValue have Invalid members %s!\r\n", device.c_str());
@@ -177,13 +213,48 @@ namespace USR_READER
         return true;
     }
 
+    void FileProcessHw::update_writer_value(void)
+    {
+        Json::Value Obj;
+
+        //add status member
+        Obj["Led"] = m_status.led;
+        Obj["Beep"] = m_status.beep;
+        Obj["Led0"] = m_status.led0;
+        Obj["Beep0"] = m_status.beep0;
+        Writer["Default"] = Obj;
+
+        //add device member
+        Obj["Serial"] = m_device.Serial;
+        Obj["Led"] = m_device.Led;
+        Obj["Beep"] = m_device.Beep;
+        Obj["IcmSpi"] = m_device.IcmSpi;
+        Obj["Rtc"] = m_device.Rtc;
+        Obj["ApI2c"] = m_device.ApI2c;
+        Obj["Led0"] = m_device.Led0;
+        Obj["Beep0"] = m_device.Beep0;
+        Writer["Device"] = Obj;
+        Obj.clear();
+
+        //add uart member
+        Obj["Baud"] = m_uart.baud;
+        Obj["DataBits"] = m_uart.databits;
+        Obj["StopBits"] = m_uart.stopbits;
+        Obj["Parity"] = m_uart.parity;
+        Writer["Uart"] = Obj;
+        Obj.clear();
+
+        std::cout<<Writer<<std::endl;
+        writer();
+    }
+
     //test for fileReadHw
     void test_file_reader_hw(void)
     {
         FileProcessHw *pReader = new FileProcessHw(HARDWART_JSON_DEFINE);
         UartInfo UartInfo;
         string DeviceStr;
-        uint8_t DeviceStatus;
+        int DeviceStatus;
 
         if(pReader->get_uart_info(&UartInfo))
         {
@@ -231,7 +302,10 @@ namespace USR_READER
             std::cout<<DeviceStatus<<std::endl;
         }
 
+        pReader->update_writer_value();
         delete pReader;
         pReader = nullptr;
     }
 }
+
+

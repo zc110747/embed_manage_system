@@ -47,6 +47,8 @@
         "set": "cpp",
         "string_view": "cpp",
         "iomanip": "cpp",
-        "iostream": "cpp"
+        "iostream": "cpp",
+        "bit": "cpp",
+        "random": "cpp"
     }
 }

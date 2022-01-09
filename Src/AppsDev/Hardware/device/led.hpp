@@ -45,7 +45,7 @@ namespace USR_DEVICE
         uint8_t Status(void);
         
     private:
-        uint8_t ledStatus{0};
+        int ledStatus{0};
         device *pdev{nullptr};
     };
 
