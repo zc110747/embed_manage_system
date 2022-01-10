@@ -19,14 +19,13 @@ int g_main_exit_flag;
 static void HW_MainLoop(void);
 static void module_test(void);
 
-int main(void)
+int main(int argc, char **argv)
 {
 #if MODULE_TEST == 1
     module_test();
 #endif
-    HwManageThread<> *pThread;
-
-    pThread = new HwManageThread<>("Hardware");
+    HwManageThread *pThread;
+    pThread = new HwManageThread("Hardware");
     pThread->Start();
 
     HW_MainLoop();

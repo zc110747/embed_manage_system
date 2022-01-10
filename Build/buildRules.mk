@@ -9,17 +9,19 @@
 # this place define the compile and flags, CC complie should be g++ and 
 # option could be add in place
 CC := g++
-CFLAGS  := -O3 -std=c++11 -lpthread
+CFLAGS = -O3 -std=c++11 -lpthread
+CFLAGS += $(Defines)
+CFLAGS += $(IncludePath)
 
 # this is the rule how to complie file with type .cpp to middle file .o 
 # then link the object and generate the executables.
 all : $(TargetFile)
 
 %.o : %.cpp
-	$(CC) $(CFLAGS) -c $< $(IncludePath) -o $@ 
+	$(CC) $(CFLAGS) -c $< -o $@ 
 
 $(TargetFile): $(Objects)
-	$(CC) -o $(TargetFile) $(Objects) $(StaticLibs) $(CFLAGS)
+	$(CC) $(CFLAGS) -o $(TargetFile) $(Objects) $(StaticLibs)
 	rm $(Objects)
 	mv $(TargetFile) $(TargetFilePath)
 tags :

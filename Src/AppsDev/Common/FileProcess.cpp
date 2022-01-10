@@ -13,6 +13,9 @@ FileProcess::FileProcess(string file)
     Reader.clear();
     Writer.clear();
     filepath.swap(file);
+
+    //open and reader current value
+    reader();
 }
 
 void FileProcess::reader(void)

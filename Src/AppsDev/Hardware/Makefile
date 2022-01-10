@@ -10,6 +10,7 @@
 # the executables
 Objects = main.o \
 		FileProcessHw.o \
+		HwManageThread.o \
 		device/device.o \
 		device/led.o \
 		device/beep.o \

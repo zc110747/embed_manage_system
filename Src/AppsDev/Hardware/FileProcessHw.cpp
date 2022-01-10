@@ -12,8 +12,6 @@ namespace USR_READER
     {
         Json::Value UartMember;
 
-        reader();
-
         if((!is_reader_valid()) || (pInfo == nullptr)){
             return false;
         }
@@ -26,26 +24,27 @@ namespace USR_READER
             if(get_json_member("Baud", &UartMember, &MemberValue))
                 pInfo->baud = MemberValue.asInt();
             else
-                is_error = false;
+                is_error = true;
 
             if(get_json_member("DataBits", &UartMember, &MemberValue))
                 pInfo->databits = MemberValue.asInt();
             else
-                is_error = false;
+                is_error = true;
 
             if(get_json_member("StopBits", &UartMember, &MemberValue))
                 pInfo->stopbits = MemberValue.asInt();
             else
-                is_error = false;
+                is_error = true;
 
             if(get_json_member("Parity", &UartMember, &MemberValue))
                 pInfo->parity = MemberValue.asString();
             else
-                is_error = false;
+                is_error = true;
 
             if(is_error)
             {
                 printf("Json Value MemberValue have Invalid members!\r\n");
+                return false;
             }
             else
             {
@@ -53,7 +52,6 @@ namespace USR_READER
                 m_uart.databits = pInfo->databits;
                 m_uart.stopbits = pInfo->stopbits;
                 m_uart.parity = pInfo->parity;
-                return true;
             }
         }
         else
@@ -157,8 +155,6 @@ namespace USR_READER
     {
         Json::Value DeviceMember;
 
-        reader();
-
         if((!is_reader_valid()) || (pInfo == nullptr)){
             return false;
         }
@@ -186,8 +182,6 @@ namespace USR_READER
     bool FileProcessHw::get_default_status(int *pStatus, const string& device)
     {
         Json::Value StatusMember;
-
-        reader();
 
         if((!is_reader_valid()) || (pStatus == nullptr)){
             return false;
@@ -217,12 +211,16 @@ namespace USR_READER
     {
         Json::Value Obj;
 
+        Writer.clear();
+        Obj.clear();
+
         //add status member
         Obj["Led"] = m_status.led;
         Obj["Beep"] = m_status.beep;
         Obj["Led0"] = m_status.led0;
         Obj["Beep0"] = m_status.beep0;
         Writer["Default"] = Obj;
+        Obj.clear();
 
         //add device member
         Obj["Serial"] = m_device.Serial;

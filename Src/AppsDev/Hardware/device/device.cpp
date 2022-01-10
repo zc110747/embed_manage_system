@@ -9,15 +9,15 @@
 namespace USR_DEVICE
 {
     device::device(std::string dev)
-{
-    dev_str = dev;
-
-    device_fd = open(dev_str.c_str(), O_RDWR);
-    if(device_fd < 0)
     {
-        printf("device driver %s open failed!\r\n", dev.c_str());
+        dev_str = dev;
+
+        device_fd = open(dev_str.c_str(), O_RDWR);
+        if(device_fd < 0)
+        {
+            printf("device driver %s open failed!\r\n", dev.c_str());
+        }
     }
-}
 
     device::device(std::string dev, int flag, mode_t mode)
     {

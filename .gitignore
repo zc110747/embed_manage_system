@@ -31,3 +31,4 @@
 *.out
 *.app
 *.ko
+Src/AppsDev/Common/ExternalPackages/libjason
