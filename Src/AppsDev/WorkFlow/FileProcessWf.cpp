@@ -8,91 +8,43 @@
 
 namespace USR_READER
 {
-    bool FileProcessWf::get_tcp_server_info(ServerInfo *pInfo)
+    bool FileProcessWf::get_tcp_server_info(ServerInfo& info)
     {
-        Json::Value TcpMember;
+        bool is_error = false;
 
-        if((!is_reader_valid()) || (pInfo == nullptr)){
+        if(!is_reader_valid())
             return false;
-        }
 
-        if(get_json_member("TcpServer", &Reader, &TcpMember))
+        info.ipaddr = Reader["TcpServer"]["ipaddr"].isString()?Reader["TcpServer"]["ipaddr"].asString()
+            :([&is_error](){is_error = true; return string("10.0.1.99");}());
+        info.port = Reader["TcpServer"]["port"].isInt()?Reader["TcpServer"]["port"].asInt()
+            :([&is_error](){is_error = true; return 8000;}());
+        m_tcp_info.ipaddr = info.ipaddr;
+        m_tcp_info.port = info.port;
+        if(is_error)
         {
-            bool is_error = false;
-            Json::Value MemberValue;    
-
-            if(get_json_member("ipaddr", &TcpMember, &MemberValue))
-                pInfo->ipaddr = MemberValue.isString()?MemberValue.asString():string();
-            else
-                is_error = true;
-
-            if(get_json_member("port", &TcpMember, &MemberValue))
-            {   
-                pInfo->port = MemberValue.isInt()?MemberValue.asInt():0;
-            }
-            else
-                is_error = true;
-
-            if(is_error)
-            {
-                m_tcp_info.ipaddr = "0.0.0.0";
-                m_tcp_info.port = 0;
-                printf("Json Value MemberValue have Invalid members!\r\n");
-                return false;
-            }
-            else
-            {
-                m_tcp_info.ipaddr = pInfo->ipaddr;
-                m_tcp_info.port = pInfo->port;
-            }
-        }
-        else
-        {
-            printf("Json Value Reader have Invalid member %s!\r\n", "TcpServer");
+            printf("Json Value MemberValue have Invalid members!\r\n");
             return false;
         }
         return true;
     }
 
-    bool FileProcessWf::get_udp_server_info(ServerInfo *pInfo)
+    bool FileProcessWf::get_udp_server_info(ServerInfo& info)
     {
-        Json::Value UdpMember;
-        
-        if((!is_reader_valid()) || (pInfo == nullptr)){
+        bool is_error = false;
+
+        if(!is_reader_valid())
             return false;
-        }
 
-        if(get_json_member("UdpServer", &Reader, &UdpMember))
+        info.ipaddr = Reader["UdpServer"]["ipaddr"].isString()?Reader["UdpServer"]["ipaddr"].asString()
+            :([&is_error](){is_error = true; return string("10.0.1.99");}());
+        info.port = Reader["UdpServer"]["port"].isInt()?Reader["UdpServer"]["port"].asInt()
+            :([&is_error](){is_error = true; return 8000;}());
+        m_udp_info.ipaddr = info.ipaddr;
+        m_udp_info.port = info.port;
+        if(is_error)
         {
-            bool is_error = false;
-            Json::Value MemberValue;    
-
-            if(get_json_member("ipaddr", &UdpMember, &MemberValue))
-                pInfo->ipaddr = MemberValue.isString()?MemberValue.asString():string();
-            else
-                is_error = true;
-
-            if(get_json_member("port", &UdpMember, &MemberValue))
-                pInfo->port = MemberValue.isInt()?MemberValue.asInt():0;
-            else
-                is_error = true;
-
-            if(is_error)
-            {
-                m_udp_info.ipaddr = "0.0.0.0";
-                m_udp_info.port = 0;
-                printf("Json Value MemberValue have Invalid members!\r\n");
-                return false;
-            }
-            else
-            {
-                m_udp_info.ipaddr = pInfo->ipaddr;
-                m_udp_info.port = pInfo->port;
-            }
-        }
-        else
-        {
-            printf("Json Value Reader have Invalid member %s!\r\n", "UdpServer");
+            printf("Json Value MemberValue have Invalid members!\r\n");
             return false;
         }
         return true;
@@ -122,15 +74,15 @@ namespace USR_READER
 
     void test_file_reader_wf(void)
     {
-        FileProcessWf *pReader = new FileProcessWf(HARDWART_JSON_DEFINE);
+        FileProcessWf *pReader = new FileProcessWf();
         ServerInfo sock_info;
 
-        if(pReader->get_tcp_server_info(&sock_info))
+        if(pReader->get_tcp_server_info(sock_info))
         {
             std::cout<<sock_info.ipaddr<<" "<<sock_info.port<<std::endl;
         }
 
-        if(pReader->get_udp_server_info(&sock_info))
+        if(pReader->get_udp_server_info(sock_info))
         {
             std::cout<<sock_info.ipaddr<<" "<<sock_info.port<<std::endl;
         }

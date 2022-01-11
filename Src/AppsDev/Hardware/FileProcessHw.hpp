@@ -10,6 +10,8 @@
 
 namespace USR_READER
 {
+    using std::string;
+
     struct UartInfo
     {
         ///BaudRate for uart
@@ -29,14 +31,14 @@ namespace USR_READER
 
     struct DevInfo
     {
-        std::string Serial;
-        std::string Led;
-        std::string Beep;
-        std::string IcmSpi;
-        std::string Rtc;      
-        std::string ApI2c;
-        std::string Led0;
-        std::string Beep0;
+      string Serial;
+      string Led;
+      string Beep;
+      string IcmSpi;
+      string Rtc;      
+      string ApI2c;
+      string Led0;
+      string Beep0;
     };
 
     struct DefaultStatus
@@ -50,6 +52,11 @@ namespace USR_READER
     class FileProcessHw : public FileProcess
     {
     public:
+          /// - 
+    	  ///constructor
+        FileProcessHw():FileProcess(HARDWART_JSON_DEFINE){
+        }
+
         /// - 
     	  ///constructor
         FileProcessHw(string file):FileProcess(file){
@@ -62,12 +69,12 @@ namespace USR_READER
       	/// \fn get_device_info() 
         ///  - This method is called for getting device's string info from json structure.
         /// \return true=do success, false=no string
-        bool get_device_info(string *pInfo, const string& device);
+        bool get_device_info(string &pInfo, const string& device);
 
       	/// \fn get_default_status() 
         ///  - This method is called for getting device's default status from json structure.
         /// \return true=do success, false=no device string
-        bool get_default_status(int *pStatus, const string& device);
+        bool get_default_status(int &Status, const string& device);
 
       	/// \fn get_uart_info() 
         ///  - called for get uart infomation.
@@ -77,42 +84,42 @@ namespace USR_READER
       	/// \fn get_serial_device() 
         ///  - called for get serial device string.
         /// \return true=do success, false=no device string
-        bool get_serial_device(string *pInfo);
+        bool get_serial_device(string& device);
 
       	/// \fn get_led_device() 
         ///  - called for get led device string.
         /// \return true=do success, false=no device string
-        bool get_led_device(string *pInfo);
+        bool get_led_device(string& device);
 
       	/// \fn get_beep_device() 
         ///  - called for get beep device string.
         /// \return true=do success, false=no device string
-        bool get_beep_device(string *pInfo);
+        bool get_beep_device(string& device);
 
       	/// \fn get_spi_device() 
         ///  - called for get spi device string.
         /// \return true=do success, false=no device string
-        bool get_spi_device(string *pInfo);
+        bool get_spi_device(string& device);
 
       	/// \fn get_rtc_device() 
         ///  - called for get rtc device string.
         /// \return true=do success, false=no device string
-        bool get_rtc_device(string *pInfo);  
+        bool get_rtc_device(string& device); 
 
       	/// \fn get_i2c_device() 
         ///  - called for get i2c device string.
         /// \return true=do success, false=no device string
-        bool get_i2c_device(string *pInfo);  
+        bool get_i2c_device(string& device); 
 
       	/// \fn get_led_status() 
         ///  - called for get led device status.
         /// \return true=do success, false=no device status
-        bool get_led_status(int *pStatus);
+        bool get_led_status(int& status);
 
       	/// \fn get_beep_status() 
         ///  - called for get beep device string.
         /// \return true=do success, false=no device status
-        bool get_beep_status(int *pStatus); 
+        bool get_beep_status(int& status); 
 
         /// \fn update_writer_value() 
         ///  - create and write files

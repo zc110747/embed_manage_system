@@ -51,12 +51,3 @@ FileProcess::~FileProcess()
     Reader.clear();
     Writer.clear();
 }
-
-bool FileProcess::get_json_member(string member, Json::Value *pIn, Json::Value *pOut)
-{
-    if(pIn->isMember(member))
-        *pOut = (*pIn)[member];
-    else
-        return false;
-    return true;
-}

@@ -10,13 +10,13 @@
 # the executable or staticLibrary
 Objects = mongoose.o
 
-IncludePath = -I ../../
+IncludePath = 
 
-Defines = -DDebug
+Defines = 
 
 # This is the file name of the executables and path where 
 # place the executable or staticLibrary
-TargetFile = libmongoose
+TargetFile = libmongoose.a
 
 # Including this file allows access to the Build System.
 include ../../../../../Build/buildLibRules.mk

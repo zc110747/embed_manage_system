@@ -21,7 +21,7 @@ Objects = main.o \
 
 CurrentPath = $(shell pwd)
 
-StaticLibs = ../Common/ExternalPackages/libjason
+StaticLibs = ../Common/ExternalPackages/libjason.a
 
 IncludePath = -I "$(CurrentPath)/../Common/" \
 			-I "$(CurrentPath)/device/"		 \

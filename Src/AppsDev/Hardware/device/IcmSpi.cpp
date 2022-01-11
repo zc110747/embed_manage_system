@@ -11,13 +11,13 @@ namespace USR_DEVICE
 
     ICMSPI::ICMSPI(void)
     {
-        string SPI_dev;
+        string spi_dev;
         FileProcessHw *pReader = new FileProcessHw(HARDWART_JSON_DEFINE);
 
-        if(pReader->get_spi_device(&SPI_dev))
+        if(pReader->get_spi_device(spi_dev))
         {
-            std::cout<<SPI_dev<<std::endl;
-            pdev = new USR_DEVICE::device(SPI_dev);
+            std::cout<<spi_dev<<std::endl;
+            pdev = new USR_DEVICE::device(spi_dev);
         }
         else
             pdev = nullptr;
@@ -28,13 +28,13 @@ namespace USR_DEVICE
 
     ICMSPI::ICMSPI(const string& device)
     {
-        string SPI_dev;
+        string spi_dev;
         FileProcessHw *pReader = new FileProcessHw(HARDWART_JSON_DEFINE);
 
-        if(pReader->get_device_info(&SPI_dev, device))
+        if(pReader->get_device_info(spi_dev, device))
         {
-            std::cout<<SPI_dev<<std::endl;
-            pdev = new USR_DEVICE::device(SPI_dev);
+            std::cout<<spi_dev<<std::endl;
+            pdev = new USR_DEVICE::device(spi_dev);
         }
         else
             pdev = nullptr;

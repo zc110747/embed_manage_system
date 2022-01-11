@@ -11,13 +11,13 @@ namespace USR_DEVICE
 
     API2C::API2C(void)
     {
-        string I2C_dev;
+        string i2c_dev;
         FileProcessHw *pReader = new FileProcessHw(HARDWART_JSON_DEFINE);
 
-        if(pReader->get_i2c_device(&I2C_dev))
+        if(pReader->get_i2c_device(i2c_dev))
         {
-            std::cout<<I2C_dev<<std::endl;
-            pdev = new USR_DEVICE::device(I2C_dev);
+            std::cout<<i2c_dev<<std::endl;
+            pdev = new USR_DEVICE::device(i2c_dev);
         }
         else
             pdev = nullptr;
@@ -28,13 +28,13 @@ namespace USR_DEVICE
 
     API2C::API2C(const string& device)
     {
-        string I2C_dev;
+        string i2c_dev;
         FileProcessHw *pReader = new FileProcessHw(HARDWART_JSON_DEFINE);
 
-        if(pReader->get_device_info(&I2C_dev, device))
+        if(pReader->get_device_info(i2c_dev, device))
         {
-            std::cout<<I2C_dev<<std::endl;
-            pdev = new USR_DEVICE::device(I2C_dev);
+            std::cout<<i2c_dev<<std::endl;
+            pdev = new USR_DEVICE::device(i2c_dev);
         }
         else
             pdev = nullptr;

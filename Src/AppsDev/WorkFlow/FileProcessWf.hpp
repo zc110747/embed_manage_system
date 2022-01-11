@@ -19,6 +19,11 @@ namespace USR_READER
     class FileProcessWf: public FileProcess
     {
     public:
+            /// - 
+    	///constructor
+        FileProcessWf():FileProcess(HARDWART_JSON_DEFINE){
+        }
+
         /// - 
     	///constructor
         FileProcessWf(string file):FileProcess(file){
@@ -31,12 +36,12 @@ namespace USR_READER
       	/// \fn get_uart_info() 
         ///  - called for get uart infomation.
         /// \return true=do success, false=no info
-        bool get_tcp_server_info(ServerInfo *pInfo);
+        bool get_tcp_server_info(ServerInfo& info);
 
       	/// \fn get_uart_info() 
         ///  - called for get uart infomation.
         /// \return true=do success, false=no info
-        bool get_udp_server_info(ServerInfo *pInfo);
+        bool get_udp_server_info(ServerInfo& info);
 
         /// \fn update_writer_value() 
         ///  - create and write files

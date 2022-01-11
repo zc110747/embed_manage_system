@@ -49,6 +49,7 @@
         "iomanip": "cpp",
         "iostream": "cpp",
         "bit": "cpp",
-        "random": "cpp"
+        "random": "cpp",
+        "cinttypes": "cpp"
     }
 }

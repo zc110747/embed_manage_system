@@ -16,7 +16,7 @@ IncludePath = -I include/
 
 # This is the file name of the executables and path where 
 # place the executable or staticLibrary
-TargetFile = libjason
+TargetFile = libjason.a
 
 # Including this file allows access to the Build System.
 include ../../../../../Build/buildLibRules.mk

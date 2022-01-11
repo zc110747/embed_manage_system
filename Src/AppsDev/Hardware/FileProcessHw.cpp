@@ -10,168 +10,44 @@ namespace USR_READER
 {
     bool FileProcessHw::get_uart_info(UartInfo *pInfo)
     {
-        Json::Value UartMember;
+        bool is_error = false;   
 
-        if((!is_reader_valid()) || (pInfo == nullptr)){
+        if((!is_reader_valid()) || (pInfo == nullptr))
+            return false;
+        
+        pInfo->baud = Reader["Uart"]["Baud"].isInt()?Reader["Uart"]["Baud"].asInt()
+                    :([&is_error](){is_error=true; return 9600;}());
+        pInfo->databits = Reader["Uart"]["DataBits"].isInt()?Reader["Uart"]["DataBits"].asInt()
+                    :([&is_error](){is_error=true; return 8;}());   
+        pInfo->stopbits = Reader["Uart"]["StopBits"].isInt()?Reader["Uart"]["StopBits"].asInt()
+                    :([&is_error](){is_error=true; return 1;}());  
+        pInfo->parity = Reader["Uart"]["Parity"].isString()?Reader["Uart"]["Parity"].asString()
+                    :([&is_error](){is_error=true; return "n";}());         
+        m_uart.baud = pInfo->baud;
+        m_uart.databits = pInfo->databits;
+        m_uart.stopbits = pInfo->stopbits;
+        m_uart.parity = pInfo->parity;
+        
+        if(is_error)
+        {
+            printf("Json Value MemberValue have Invalid members!\r\n");
             return false;
         }
-
-        if(get_json_member("Uart", &Reader, &UartMember))
-        {
-            bool is_error = false;
-            Json::Value MemberValue;
-
-            if(get_json_member("Baud", &UartMember, &MemberValue))
-                pInfo->baud = MemberValue.asInt();
-            else
-                is_error = true;
-
-            if(get_json_member("DataBits", &UartMember, &MemberValue))
-                pInfo->databits = MemberValue.asInt();
-            else
-                is_error = true;
-
-            if(get_json_member("StopBits", &UartMember, &MemberValue))
-                pInfo->stopbits = MemberValue.asInt();
-            else
-                is_error = true;
-
-            if(get_json_member("Parity", &UartMember, &MemberValue))
-                pInfo->parity = MemberValue.asString();
-            else
-                is_error = true;
-
-            if(is_error)
-            {
-                printf("Json Value MemberValue have Invalid members!\r\n");
-                return false;
-            }
-            else
-            {
-                m_uart.baud = pInfo->baud;
-                m_uart.databits = pInfo->databits;
-                m_uart.stopbits = pInfo->stopbits;
-                m_uart.parity = pInfo->parity;
-            }
-        }
-        else
-        {
-            printf("Json Value Reader have Invalid member %s!\r\n", "Uart");
-            return false;
-        }
-
         return true;
     }
 
-    bool FileProcessHw::get_led_device(string *pInfo)
-    {
-        bool status;
-
-        status = get_device_info(pInfo, "Led");
-        if(status)
-            m_device.Led = *pInfo;
-
-        return status;
-    }
-
-    bool FileProcessHw::get_serial_device(string *pInfo)
-    {
-        bool status;
-
-        status = get_device_info(pInfo, "Serial");
-        if(status)
-            m_device.Serial = *pInfo;
-
-        return status;
-    }
-
-    bool FileProcessHw::get_beep_device(string *pInfo)
-    {
-        bool status;    
-
-        status = get_device_info(pInfo, "Beep");
-        if(status)
-            m_device.Beep = *pInfo;
-
-        return status;
-    }
-
-    bool FileProcessHw::get_spi_device(string *pInfo)
-    {
-        bool status;    
-
-        status = get_device_info(pInfo, "IcmSpi");
-        if(status)
-            m_device.IcmSpi = *pInfo;
-
-        return status;
-    }
-
-    bool FileProcessHw::get_rtc_device(string *pInfo)
-    {
-        bool status;    
-
-        status = get_device_info(pInfo, "Rtc");
-        if(status)
-            m_device.Rtc = *pInfo;
-
-        return status;
-    }
-
-    bool FileProcessHw::get_i2c_device(string *pInfo)
-    {
-        bool status;    
-
-        status = get_device_info(pInfo, "ApI2c");
-        if(status)
-            m_device.ApI2c = *pInfo;
-
-        return status;
-    }
-
-    bool FileProcessHw::get_led_status(int *pStatus)
-    {
-        bool status;    
-
-        status = get_default_status(pStatus, "Led");
-        if(status)
-            m_status.led = *pStatus;
-
-        return status;
-    }
-
-    bool FileProcessHw::get_beep_status(int *pStatus)
-    {
-        bool status;    
-
-        status = get_default_status(pStatus, "Beep");
-        if(status)
-            m_status.beep = *pStatus;
-
-        return status;
-    }
-
-    bool FileProcessHw::get_device_info(string *pInfo, const string& device)
+    bool FileProcessHw::get_device_info(string &pInfo, const string& device)
     {
         Json::Value DeviceMember;
+        bool is_error = false;   
 
-        if((!is_reader_valid()) || (pInfo == nullptr)){
+        if(!is_reader_valid())
             return false;
-        }
 
-        if(get_json_member("Device", &Reader, &DeviceMember))
-        {
-            Json::Value MemberValue;
+        pInfo = Reader["Device"][device].isString()?Reader["Device"][device].asString()
+            :([&is_error](){is_error = true; return std::string("null");}());
 
-            if(get_json_member(device, &DeviceMember, &MemberValue))
-                *pInfo = MemberValue.isString()?MemberValue.asString():string();
-            else
-            {
-                printf("Json Value MemberValue have Invalid members %s!\r\n", device.c_str());
-                return false;
-            }
-        } 
-        else
+        if(is_error)
         {
             printf("Json Value Reader have Invalid member %s!\r\n", "Device");
             return false;
@@ -179,32 +55,95 @@ namespace USR_READER
         return true;
     }
 
-    bool FileProcessHw::get_default_status(int *pStatus, const string& device)
+    bool FileProcessHw::get_default_status(int &status, const string& device)
     {
         Json::Value StatusMember;
+        bool is_error = false;   
 
-        if((!is_reader_valid()) || (pStatus == nullptr)){
+        if(!is_reader_valid())
             return false;
-        }
+        
+        status = Reader["Default"][device].isInt()?Reader["Default"][device].asInt()
+            :([&is_error](){is_error = true; return 0;}());
 
-        if(get_json_member("Default", &Reader, &StatusMember))
+        if(is_error)
         {
-            Json::Value MemberValue;
-
-            if(get_json_member(device, &StatusMember, &MemberValue))
-                *pStatus = MemberValue.isInt()?MemberValue.asInt():0;
-            else
-            {
-                printf("Json Value MemberValue have Invalid members %s!\r\n", device.c_str());
-                return false;
-            }
-        } 
-        else
-        {
-            printf("Json Value Reader have Invalid member %s!\r\n", "Default");
+            printf("Json Value Reader have Invalid member %s!\r\n", "Device");
             return false;
         }
         return true;
+    }
+
+    bool FileProcessHw::get_serial_device(string& device)
+    {
+        bool flag;
+
+        flag = get_device_info(device, "Serial");
+        m_device.Serial = device;
+        return flag;
+    }
+    
+    bool FileProcessHw::get_led_device(string& device)
+    {
+        bool flag;
+
+        flag = get_device_info(device, "Led");
+        m_device.Led = device;
+        return flag;
+    }
+
+    bool FileProcessHw::get_beep_device(string& device)
+    {
+        bool flag;
+
+        flag = get_device_info(device, "Beep");
+        m_device.Beep = device;
+        return flag;
+    }
+
+    bool FileProcessHw::get_spi_device(string& device)
+    {
+        bool flag;    
+
+        flag = get_device_info(device, "IcmSpi");
+        m_device.IcmSpi = device;
+        return flag;
+    }
+
+    bool FileProcessHw::get_rtc_device(string& device)
+    {
+        bool flag;    
+
+        flag = get_device_info(device, "Rtc");
+        m_device.Rtc = device;
+        return flag;
+    }
+
+    bool FileProcessHw::get_i2c_device(string& device)
+    {
+        bool status;    
+
+        status = get_device_info(device, "ApI2c");
+        m_device.ApI2c = device;
+        return status;
+    }
+
+    bool FileProcessHw::get_led_status(int& status)
+    {
+        bool flag;    
+
+        flag = get_default_status(status, "Led");
+        m_status.led = status;
+        return flag;
+    }
+
+    bool FileProcessHw::get_beep_status(int& status)
+    {
+        bool flag;    
+
+        flag = get_default_status(status, "Beep");
+        m_status.beep = status;
+        return flag;
     }
 
     void FileProcessHw::update_writer_value(void)
@@ -260,42 +199,42 @@ namespace USR_READER
             std::cout<<UartInfo.parity<<std::endl;
         }
 
-        if(pReader->get_beep_device(&DeviceStr))
+        if(pReader->get_beep_device(DeviceStr))
         {
             std::cout<<DeviceStr<<std::endl;
         }
 
-        if(pReader->get_i2c_device(&DeviceStr))
+        if(pReader->get_i2c_device(DeviceStr))
         {
             std::cout<<DeviceStr<<std::endl;
         }
 
-        if(pReader->get_led_device(&DeviceStr))
+        if(pReader->get_led_device(DeviceStr))
         {
             std::cout<<DeviceStr<<std::endl;
         }
 
-        if(pReader->get_rtc_device(&DeviceStr))
+        if(pReader->get_rtc_device(DeviceStr))
         {
             std::cout<<DeviceStr<<std::endl;
         }
 
-        if(pReader->get_serial_device(&DeviceStr))
+        if(pReader->get_serial_device(DeviceStr))
         {
             std::cout<<DeviceStr<<std::endl;
         }
 
-        if(pReader->get_spi_device(&DeviceStr))
+        if(pReader->get_spi_device(DeviceStr))
         {
             std::cout<<DeviceStr<<std::endl;
         }
 
-        if(pReader->get_led_status(&DeviceStatus))
+        if(pReader->get_led_status(DeviceStatus))
         {
             std::cout<<DeviceStatus<<std::endl;
         }
 
-        if(pReader->get_beep_status(&DeviceStatus))
+        if(pReader->get_beep_status(DeviceStatus))
         {
             std::cout<<DeviceStatus<<std::endl;
         }

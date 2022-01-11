@@ -15,11 +15,11 @@ namespace USR_DEVICE
         string beep_device;
         FileProcessHw *pReader = new FileProcessHw(HARDWART_JSON_DEFINE);
 
-        if(pReader->get_beep_device(&beep_device))
+        if(pReader->get_beep_device(beep_device))
         {
             std::cout<<beep_device<<std::endl;
             pdev = new USR_DEVICE::device(beep_device);
-            if(pReader->get_beep_status(&beepStatus))
+            if(pReader->get_beep_status(beepStatus))
             {
                 pdev->write(&beepStatus, 1);
             }
@@ -36,11 +36,11 @@ namespace USR_DEVICE
         string beep_device;
         FileProcessHw *pReader = new FileProcessHw(HARDWART_JSON_DEFINE);
 
-        if(pReader->get_device_info(&beep_device, device))
+        if(pReader->get_device_info(beep_device, device))
         {
             std::cout<<beep_device<<std::endl;
             pdev = new USR_DEVICE::device(beep_device);
-            if(pReader->get_default_status(&beepStatus, device))
+            if(pReader->get_default_status(beepStatus, device))
             {
                 pdev->write(&beepStatus, 1);
             }

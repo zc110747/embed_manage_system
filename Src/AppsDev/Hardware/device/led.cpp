@@ -15,11 +15,11 @@ namespace USR_DEVICE
         string led_device;
         FileProcessHw *pReader = new FileProcessHw(HARDWART_JSON_DEFINE);
 
-        if(pReader->get_led_device(&led_device))
+        if(pReader->get_led_device(led_device))
         {
             std::cout<<led_device<<std::endl;
             pdev = new USR_DEVICE::device(led_device);
-            if(pReader->get_led_status(&ledStatus))
+            if(pReader->get_led_status(ledStatus))
             {
                 pdev->write(&ledStatus, 1);
             }
@@ -36,11 +36,11 @@ namespace USR_DEVICE
         string led_device;
         FileProcessHw *pReader = new FileProcessHw(HARDWART_JSON_DEFINE);
 
-        if(pReader->get_device_info(&led_device, device))
+        if(pReader->get_device_info(led_device, device))
         {
             std::cout<<led_device<<std::endl;
             pdev = new USR_DEVICE::device(led_device);
-            if(pReader->get_default_status(&ledStatus, device))
+            if(pReader->get_default_status(ledStatus, device))
             {
                 pdev->write(&ledStatus, 1);
             }

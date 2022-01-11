@@ -6,7 +6,8 @@
 
 #include "FileProcessWf.hpp"
 
-#define MODULE_TEST 0
+#define MODULE_TEST 1
+static void module_test(void);
 
 int main(int argc, char **argv)
 {

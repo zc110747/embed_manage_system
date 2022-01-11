@@ -10,12 +10,11 @@
 # the executables
 Objects = main.o \
 		FileProcessWf.o \
-		TcpServerThread.o \
 		../Common/FileProcess.o 
 
 CurrentPath = $(shell pwd)
 
-StaticLibs = ../Common/ExternalPackages/libjason
+StaticLibs = ../Common/ExternalPackages/libjason.a
 
 IncludePath = -I "$(CurrentPath)/../Common/" \
 			-I "$(CurrentPath)"				 \
