@@ -1,0 +1,12 @@
+{
+	"TcpServer" : 
+	{
+		"ipaddr" : "10.0.1.99",
+		"port" : 8000
+	},
+	"UdpServer" : 
+	{
+		"ipaddr" : "10.0.1.99",
+		"port" : 8001
+	}
+}

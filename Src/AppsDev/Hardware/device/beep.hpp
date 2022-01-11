@@ -1,56 +1,56 @@
 /*
- * led.hpp
+ * beep.hpp
  *
  *  Created on: 2021 Dec 11 15:08:05
  */
 #pragma once
 #include "device.hpp"
-#include "FileReaderHw.hpp"
+#include "FileProcessHw.hpp"
 
 namespace USR_DEVICE
 {
-    class LED
+    class BEEP
     {
     public:
         /// - 
         ///constructor
-        LED(void);
+        BEEP(void);
 
         /// - 
         ///constructor
-        LED(const string& device);
+        BEEP(const string& device);
 
         /// - 
         ///destructor
-        ~LED(void);
+        ~BEEP(void);
 
       	/// \fn On() 
-        ///  - Called for Set LED On.
+        ///  - Called for Set Beep On.
         /// \return NULL
         void On(void);
 
         /// \fn Off() 
-        ///  - Called for Set LED Off.
+        ///  - Called for Set Beep Off.
         /// \return NULL
         void Off(void);
 
         /// \fn Trigger() 
         ///  - Called for Trigger the Led, Switch On or Off.
-        /// \return NULL  
+        /// \return NULL 
         void Trigger(void);
 
         /// \fn Status() 
-        ///  - get current led status.
+        ///  - get current beep status.
         /// \return led on/off status  
         uint8_t Status(void);
         
     private:
-        uint8_t ledStatus{0};
-        device *pled{nullptr};
+        int beepStatus{0};
+        device *pdev{nullptr};
     };
 
     /// \fn test_led_module() 
-    ///  - Called for test led module
+    ///  - Called for test beep module
     /// \return NULL  
-    void test_led_module(void);
+    void test_beep_module(void);
 }

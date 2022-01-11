@@ -6,14 +6,15 @@
                 "${workspaceFolder}/**",
                 "${workspaceFolder}/Src/AppsDev/Common",
                 "${workspaceFolder}/Src/AppsDev/Gui",
-                "${workspaceFolder}/Src/AppsDev/Hardware"
+                "${workspaceFolder}/Src/AppsDev/Hardware",
+                "${workspaceFolder}/Src/AppsDev/Common/ExternalPackages/jsoncpp/include"
             ],
             "defines": [
                 "_DEBUG",
                 "UNICODE",
                 "_UNICODE"
             ],
-            "compilerPath": "C:\\cygwin64\\mingw64\\bin\\g++.exe",
+            "compilerPath": "${env.GPlusPlus}",
             "cStandard": "c17",
             "cppStandard": "c++17",
             "intelliSenseMode": "windows-gcc-x64"

@@ -8,18 +8,20 @@
 
 # this place define the compile and flags, CC complie should be g++ and 
 # option could be add in place
-CC = g++
-CFLAGS  := -O3 -std=c++11 -lpthread
+CC := g++
+CFLAGS = -O3 -std=c++11 -lpthread
+CFLAGS += $(Defines)
+CFLAGS += $(IncludePath)
 
 # this is the rule how to complie file with type .cpp to middle file .o 
 # then link the object and generate the staticLibrary.
 all : $(TargetFile)
 
 %.o : %.cpp
-	$(CC) $(CFLAGS) -c $< -o $@ -I $(IncludePath)
+	$(CC) $(CFLAGS) -c $< -o $@ 
 
 $(TargetFile): $(Objects)
-	ar cr $@ $(Objects)
+	ar cr $@  $(Objects)
 	rm $(Objects)
 	mv $(TargetFile) ../
 tags :

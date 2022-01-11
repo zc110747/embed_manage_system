@@ -9,17 +9,24 @@
 # This is object should be build and will link to generate
 # the executables
 Objects = main.o \
-		device.o \
-		FileReaderHw.o \
-		../Common/FileReader.o \
-		led.o \
-		beep.o
+		FileProcessHw.o \
+		HwManageThread.o \
+		device/device.o \
+		device/led.o \
+		device/beep.o \
+		device/ApI2c.o \
+		device/IcmSpi.o \
+		../Common/FileProcess.o \
+		../Common/gThread.o
 
 CurrentPath = $(shell pwd)
 
 StaticLibs = ../Common/ExternalPackages/libjason
 
-IncludePath = -I $(CurrentPath)/../Common/
+IncludePath = -I "$(CurrentPath)/../Common/" \
+			-I "$(CurrentPath)/device/"		 \
+			-I "$(CurrentPath)"				 \
+			-I "$(CurrentPath)/../Common/ExternalPackages/jsoncpp/include/"
 
 # This is the file name of the executables and path where 
 # place the executables

@@ -5,52 +5,52 @@
  */
 #pragma once
 #include "device.hpp"
-#include "FileReaderHw.hpp"
+#include "FileProcessHw.hpp"
 
 namespace USR_DEVICE
 {
-    class BEEP
+    class LED
     {
     public:
         /// - 
         ///constructor
-        BEEP(void);
+        LED(void);
 
         /// - 
         ///constructor
-        BEEP(const string& device);
+        LED(const string& device);
 
         /// - 
         ///destructor
-        ~BEEP(void);
+        ~LED(void);
 
       	/// \fn On() 
-        ///  - Called for Set Beep On.
+        ///  - Called for Set LED On.
         /// \return NULL
         void On(void);
 
         /// \fn Off() 
-        ///  - Called for Set Beep Off.
+        ///  - Called for Set LED Off.
         /// \return NULL
         void Off(void);
 
         /// \fn Trigger() 
         ///  - Called for Trigger the Led, Switch On or Off.
-        /// \return NULL 
+        /// \return NULL  
         void Trigger(void);
 
         /// \fn Status() 
-        ///  - get current beep status.
+        ///  - get current led status.
         /// \return led on/off status  
         uint8_t Status(void);
         
     private:
-        uint8_t beepStatus{0};
-        device *pbeep{nullptr};
+        int ledStatus{0};
+        device *pdev{nullptr};
     };
 
     /// \fn test_led_module() 
-    ///  - Called for test beep module
+    ///  - Called for test led module
     /// \return NULL  
-    void test_beep_module(void);
+    void test_led_module(void);
 }
