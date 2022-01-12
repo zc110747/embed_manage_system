@@ -1,10 +1,6 @@
 {
     "SocketTcp":{
-        "ipaddr":"127.0.0.1",
-        "net_port":8000
+        "ipaddr":"10.0.1.99",
+        "net_port":3000
     },
-    "SocketUdp":{
-        "ipaddr":"127.0.0.1",
-        "net_port":8001
-    }
 }

@@ -9,7 +9,7 @@
 # this place define the compile and flags, CC complie should be g++ and 
 # option could be add in place
 CC := g++
-CFLAGS = -O3 -std=c++11 -lpthread
+CFLAGS = -O3 -std=c++11 -pthread
 CFLAGS += $(Defines)
 CFLAGS += $(IncludePath)
 
