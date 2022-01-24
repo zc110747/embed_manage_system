@@ -43,7 +43,7 @@ namespace USR_DEVICE
 
         /// - 
         ///constructor
-        ICMSPI(const string& device);
+        ICMSPI(USR_READER::DevInfoEnum dev);
 
         /// - 
         ///destructor

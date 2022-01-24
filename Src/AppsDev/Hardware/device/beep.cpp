@@ -10,43 +10,20 @@ namespace USR_DEVICE
 {
     using namespace USR_READER;
 
-    BEEP::BEEP(void)
+    BEEP::BEEP(void):BEEP(DIE_BEEP)
     {
-        string beep_device;
-        FileProcessHw *pReader = new FileProcessHw(HARDWART_JSON_DEFINE);
-
-        if(pReader->get_beep_device(beep_device))
-        {
-            std::cout<<beep_device<<std::endl;
-            pdev = new USR_DEVICE::device(beep_device);
-            if(pReader->get_beep_status(beepStatus))
-            {
-                pdev->write(&beepStatus, 1);
-            }
-        }
-        else
-            pdev = nullptr;
-
-        delete pReader;
-        pReader = nullptr;
     }
 
-    BEEP::BEEP(const string& device)
+    BEEP::BEEP(DevInfoEnum dev)
     {
         string beep_device;
         FileProcessHw *pReader = new FileProcessHw(HARDWART_JSON_DEFINE);
 
-        if(pReader->get_device_info(beep_device, device))
-        {
-            std::cout<<beep_device<<std::endl;
-            pdev = new USR_DEVICE::device(beep_device);
-            if(pReader->get_default_status(beepStatus, device))
-            {
-                pdev->write(&beepStatus, 1);
-            }
-        }
-        else
-            pdev = nullptr;
+        beep_device = pReader->get_device_info(dev);
+        std::cout<<beep_device<<std::endl;
+        pdev = new USR_DEVICE::device(beep_device);
+        beepStatus = pReader->get_default_status(dev);
+        pdev->write(&beepStatus, 1);
 
         delete pReader;
         pReader = nullptr;
@@ -110,7 +87,7 @@ namespace USR_DEVICE
         delete pdev;
         pdev = nullptr;
 
-        pdev = new USR_DEVICE::BEEP("Beep0");
+        pdev = new USR_DEVICE::BEEP(DIE_BEEP0);
         pdev->Trigger();
         pdev->Off();
         delete pdev;

@@ -5,51 +5,81 @@
  */
 #pragma once
 #include "FileProcess.hpp"
+#include <list>
+#include <string>
+#include <algorithm>
 
 #define HARDWART_JSON_DEFINE    "WorkFlowConfig.json"
 
 namespace USR_READER
 {
-    struct ServerInfo
+    typedef enum
     {
+        MODE_CLIENT = 0,
+        MODE_SERVER
+    }LinkModeEnum;
+
+    typedef enum
+    {
+        MODE_TCP = 0,
+        MODE_UDP
+    }ProtocolModeEnum;
+
+    struct SocketInfo
+    {
+        LinkModeEnum link;
+        ProtocolModeEnum protocol;
         std::string ipaddr;
         int port;
+
+        //only valid in client mode
+        std::string server_ip;
+        int server_port;
     };
+
+    typedef enum
+    {
+        SOCK_TCP_SERVER_0 = 0,
+        SOCK_UDP_SERVER_0,
+        SOCK_TCP_CLIENT_0,
+        SOCK_LIST_END,
+    }SockListEnum;
 
     class FileProcessWf: public FileProcess
     {
     public:
             /// - 
     	///constructor
-        FileProcessWf():FileProcess(HARDWART_JSON_DEFINE){
+        FileProcessWf():FileProcessWf(HARDWART_JSON_DEFINE){
         }
 
         /// - 
     	///constructor
-        FileProcessWf(string file):FileProcess(file){
-        }
-
+        FileProcessWf(string file);
+        
         /// - 
     	///destructor
         ~FileProcessWf(){};
 
-      	/// \fn get_uart_info() 
-        ///  - called for get uart infomation.
+      	/// \fn get_sock_info() 
+        ///  - called for get sock infomation.
         /// \return true=do success, false=no info
-        bool get_tcp_server_info(ServerInfo& info);
-
-      	/// \fn get_uart_info() 
-        ///  - called for get uart infomation.
-        /// \return true=do success, false=no info
-        bool get_udp_server_info(ServerInfo& info);
+        SocketInfo *get_sock_info(SockListEnum sock){
+            return &m_SockMap[sock];
+        }
 
         /// \fn update_writer_value() 
         ///  - create and write files
         /// \return NULL
         void update_writer_value(void);
     private:
-        struct ServerInfo m_tcp_info;
-        struct ServerInfo m_udp_info;
+      	/// \fn get_sock_info_internal() 
+        ///  - called for get socket info infomation internal.
+        /// \return true=do success, false=no info
+        bool get_sock_info_internal(SockListEnum sock, std::string SockStr);
+
+        struct std::map<SockListEnum, SocketInfo> m_SockMap;
+
     };
 
     //test for fileReadHw

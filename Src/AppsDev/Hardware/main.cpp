@@ -12,7 +12,7 @@
  */
 #include "HwManageThread.hpp"
 
-#define MODULE_TEST 0
+#define MODULE_TEST 1
 
 int g_main_exit_flag;
 
@@ -23,7 +23,7 @@ int main(int argc, char **argv)
 {
 #if MODULE_TEST == 1
     module_test();
-#endif
+#else
     HwManageThread *pThread;
     pThread = new HwManageThread("Hardware");
     pThread->Start();
@@ -34,6 +34,7 @@ int main(int argc, char **argv)
     delete pThread;
     pThread = nullptr;
     return 0;
+#endif
 }
 
 static void HW_MainLoop(void)

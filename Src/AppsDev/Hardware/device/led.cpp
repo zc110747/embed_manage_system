@@ -10,43 +10,20 @@ namespace USR_DEVICE
 {
     using namespace USR_READER;
 
-    LED::LED(void)
+    LED::LED(void):LED(DIE_LED)
     {
-        string led_device;
-        FileProcessHw *pReader = new FileProcessHw(HARDWART_JSON_DEFINE);
-
-        if(pReader->get_led_device(led_device))
-        {
-            std::cout<<led_device<<std::endl;
-            pdev = new USR_DEVICE::device(led_device);
-            if(pReader->get_led_status(ledStatus))
-            {
-                pdev->write(&ledStatus, 1);
-            }
-        }
-        else
-            pdev = nullptr;
-
-        delete pReader;
-        pReader = nullptr;
     }
 
-    LED::LED(const string& device)
+    LED::LED(DevInfoEnum dev)
     {
         string led_device;
         FileProcessHw *pReader = new FileProcessHw(HARDWART_JSON_DEFINE);
 
-        if(pReader->get_device_info(led_device, device))
-        {
-            std::cout<<led_device<<std::endl;
-            pdev = new USR_DEVICE::device(led_device);
-            if(pReader->get_default_status(ledStatus, device))
-            {
-                pdev->write(&ledStatus, 1);
-            }
-        }
-        else
-            pdev = nullptr;
+        led_device = pReader->get_device_info(dev);
+        std::cout<<led_device<<std::endl;
+        pdev = new USR_DEVICE::device(led_device);
+        ledStatus = pReader->get_default_status(dev);
+        pdev->write(&ledStatus, 1);
 
         delete pReader;
         pReader = nullptr;
@@ -110,7 +87,7 @@ namespace USR_DEVICE
         delete pdev;
         pdev = nullptr;
 
-        pdev = new USR_DEVICE::LED("Led0");
+        pdev = new USR_DEVICE::LED(DIE_LED0);
         pdev->Trigger();
         pdev->Off();
         delete pdev;

@@ -2,9 +2,9 @@
 	"Default" : 
 	{
 		"Beep" : 0,
-		"Beep0" : 0,
-		"Led" : 1,
-		"Led0" : 0
+		"Beep0" : 1,
+		"Led" : 0,
+		"Led0" : 1
 	},
 	"Device" : 
 	{

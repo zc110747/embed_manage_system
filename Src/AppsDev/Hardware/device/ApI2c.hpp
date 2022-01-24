@@ -28,8 +28,8 @@ namespace USR_DEVICE
 
         /// - 
         ///constructor
-        API2C(const string& device);
-
+        API2C(USR_READER::DevInfoEnum dev);
+        
         /// - 
         ///destructor
         ~API2C(void);

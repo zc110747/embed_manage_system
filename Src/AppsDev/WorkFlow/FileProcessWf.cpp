@@ -8,40 +8,40 @@
 
 namespace USR_READER
 {
-    bool FileProcessWf::get_tcp_server_info(ServerInfo& info)
+    const std::map<SockListEnum, std::string> SockStrMap = {
+        {SOCK_TCP_SERVER_0, "SOCK_TCP_SERVER_0"},
+        {SOCK_UDP_SERVER_0, "SOCK_UDP_SERVER_0"},
+        {SOCK_TCP_CLIENT_0, "SOCK_TCP_CLIENT_0"},
+    };
+
+    FileProcessWf::FileProcessWf(string file):FileProcess(file)
     {
-        bool is_error = false;
-
-        if(!is_reader_valid())
-            return false;
-
-        info.ipaddr = Reader["TcpServer"]["ipaddr"].isString()?Reader["TcpServer"]["ipaddr"].asString()
-            :([&is_error](){is_error = true; return string("10.0.1.99");}());
-        info.port = Reader["TcpServer"]["port"].isInt()?Reader["TcpServer"]["port"].asInt()
-            :([&is_error](){is_error = true; return 8000;}());
-        m_tcp_info.ipaddr = info.ipaddr;
-        m_tcp_info.port = info.port;
-        if(is_error)
-        {
-            printf("Json Value MemberValue have Invalid members!\r\n");
-            return false;
-        }
-        return true;
+        for(auto &ref_val:SockStrMap)
+            get_sock_info_internal(ref_val.first, ref_val.second);
     }
 
-    bool FileProcessWf::get_udp_server_info(ServerInfo& info)
+    bool FileProcessWf::get_sock_info_internal(SockListEnum sock, std::string SockStr)
     {
         bool is_error = false;
+        SocketInfo info;
 
         if(!is_reader_valid())
             return false;
 
-        info.ipaddr = Reader["UdpServer"]["ipaddr"].isString()?Reader["UdpServer"]["ipaddr"].asString()
+        info.link = (LinkModeEnum)(Reader[SockStr]["link"].isInt()?Reader[SockStr]["link"].asInt()
+            :([&is_error](){is_error = true; return -1;}()));
+        info.protocol = (ProtocolModeEnum)(Reader[SockStr]["protocl"].isInt()?Reader[SockStr]["protocl"].asInt()
+            :([&is_error](){is_error = true; return -1;}()));
+        info.ipaddr = Reader[SockStr]["ipaddr"].isString()?Reader[SockStr]["ipaddr"].asString()
             :([&is_error](){is_error = true; return string("10.0.1.99");}());
-        info.port = Reader["UdpServer"]["port"].isInt()?Reader["UdpServer"]["port"].asInt()
+        info.port = Reader[SockStr]["port"].isInt()?Reader[SockStr]["port"].asInt()
             :([&is_error](){is_error = true; return 8000;}());
-        m_udp_info.ipaddr = info.ipaddr;
-        m_udp_info.port = info.port;
+        info.server_ip = Reader[SockStr]["server_ip"].isString()?Reader[SockStr]["server_ip"].asString()
+            :([&is_error](){is_error = true; return string("10.0.1.99");}());
+        info.server_port = Reader[SockStr]["server_port"].isInt()?Reader[SockStr]["server_port"].asInt()
+            :([&is_error](){is_error = true; return 8001;}());
+        m_SockMap[sock] = info;
+
         if(is_error)
         {
             printf("Json Value MemberValue have Invalid members!\r\n");
@@ -55,18 +55,19 @@ namespace USR_READER
         Json::Value Obj;
 
         Writer.clear();
-        Obj.clear();
+        Obj.clear();  
 
-        //add status member
-        Obj["ipaddr"] = m_udp_info.ipaddr;
-        Obj["port"] = m_udp_info.port;
-        Writer["UdpServer"] = Obj;
-        Obj.clear();
-
-        Obj["ipaddr"] = m_tcp_info.ipaddr;
-        Obj["port"] = m_tcp_info.port;
-        Writer["TcpServer"] = Obj;
-        Obj.clear();
+        std::for_each(SockStrMap.begin(), SockStrMap.end(), [&](const typename std::pair<SockListEnum, std::string> &ref_value){
+            SocketInfo info = m_SockMap[ref_value.first];
+            Obj["link"] = info.link;
+            Obj["protocl"] = info.protocol;
+            Obj["ipaddr"] = info.ipaddr;
+            Obj["port"] = info.port;
+            Obj["server_ip"] = info.server_ip;
+            Obj["server_port"] = info.server_port;
+            Writer[ref_value.second] = Obj;
+            Obj.clear(); 
+        });
 
         std::cout<<Writer<<std::endl;
         writer();
@@ -75,17 +76,13 @@ namespace USR_READER
     void test_file_reader_wf(void)
     {
         FileProcessWf *pReader = new FileProcessWf();
-        ServerInfo sock_info;
+        SocketInfo *pSockInfo;
 
-        if(pReader->get_tcp_server_info(sock_info))
-        {
-            std::cout<<sock_info.ipaddr<<" "<<sock_info.port<<std::endl;
-        }
+        pSockInfo = pReader->get_sock_info(SOCK_TCP_SERVER_0);
+        std::cout<<pSockInfo->ipaddr<<" "<<pSockInfo->port<<std::endl;
 
-        if(pReader->get_udp_server_info(sock_info))
-        {
-            std::cout<<sock_info.ipaddr<<" "<<sock_info.port<<std::endl;
-        }
+        pSockInfo = pReader->get_sock_info(SOCK_UDP_SERVER_0);
+        std::cout<<pSockInfo->ipaddr<<" "<<pSockInfo->port<<std::endl;
 
         pReader->update_writer_value();
         delete pReader;

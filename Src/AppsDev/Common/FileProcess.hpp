@@ -41,11 +41,6 @@ protected:
     Json::Value Reader;
     Json::Value Writer;
 
-    /// \fn get_json_member() 
-    ///  - get json member through the string member name.
-    /// \return true=read member success, false=read member fail.
-    bool get_json_member(string member, Json::Value *pIn, Json::Value *pOut);
-
     /// \fn reader() 
     ///  - called for get reader 
     /// \return true=reader valid, false=reader invalid.

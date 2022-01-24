@@ -18,7 +18,7 @@ namespace USR_DEVICE
 
         /// - 
         ///constructor
-        BEEP(const string& device);
+        BEEP(USR_READER::DevInfoEnum dev);
 
         /// - 
         ///destructor

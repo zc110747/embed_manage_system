@@ -18,7 +18,7 @@ namespace USR_DEVICE
 
         /// - 
         ///constructor
-        LED(const string& device);
+        LED(USR_READER::DevInfoEnum dev);
 
         /// - 
         ///destructor

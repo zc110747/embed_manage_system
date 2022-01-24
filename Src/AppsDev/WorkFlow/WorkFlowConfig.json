@@ -1,12 +1,29 @@
 {
-	"TcpServer" : 
+	"SOCK_TCP_CLIENT_0" : 
 	{
 		"ipaddr" : "10.0.1.99",
-		"port" : 8000
+		"link" : 0,
+		"port" : 5000,
+		"protocl" : 0,
+		"server_ip" : "10.0.1.40",
+		"server_port" : 5335
 	},
-	"UdpServer" : 
+	"SOCK_TCP_SERVER_0" : 
 	{
 		"ipaddr" : "10.0.1.99",
-		"port" : 8001
+		"link" : 1,
+		"port" : 8000,
+		"protocl" : 0,
+		"server_ip" : "null",
+		"server_port" : 0
+	},
+	"SOCK_UDP_SERVER_0" : 
+	{
+		"ipaddr" : "10.0.1.99",
+		"link" : 1,
+		"port" : 8001,
+		"protocl" : 1,
+		"server_ip" : "null",
+		"server_port" : 0
 	}
 }
