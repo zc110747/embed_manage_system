@@ -21,7 +21,7 @@
 	{
 		"ipaddr" : "10.0.1.99",
 		"link" : 1,
-		"port" : 8001,
+		"port" : 3222,
 		"protocl" : 1,
 		"server_ip" : "null",
 		"server_port" : 0

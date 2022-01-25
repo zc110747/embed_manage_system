@@ -64,8 +64,22 @@ namespace USR_READER
       	/// \fn get_sock_info() 
         ///  - called for get sock infomation.
         /// \return true=do success, false=no info
-        SocketInfo *get_sock_info(SockListEnum sock){
-            return &m_SockMap[sock];
+        SocketInfo get_sock_info(SockListEnum sock){
+            return m_SockMap[sock];
+        }
+
+        bool is_sock_list(SockListEnum sock){
+            if(sock>=SOCK_TCP_SERVER_0 && sock<SOCK_LIST_END)
+                return true;
+            return false;
+        }
+
+        bool set_sock_info(SockListEnum sock, const SocketInfo &info)
+        {
+            if(!is_sock_list(sock))
+                return false;
+            m_SockMap[sock] = info;
+            return true;
         }
 
         /// \fn update_writer_value() 

@@ -76,13 +76,15 @@ namespace USR_READER
     void test_file_reader_wf(void)
     {
         FileProcessWf *pReader = new FileProcessWf();
-        SocketInfo *pSockInfo;
+        SocketInfo MySockInfo;
 
-        pSockInfo = pReader->get_sock_info(SOCK_TCP_SERVER_0);
-        std::cout<<pSockInfo->ipaddr<<" "<<pSockInfo->port<<std::endl;
+        MySockInfo = pReader->get_sock_info(SOCK_TCP_SERVER_0);
+        std::cout<<MySockInfo.ipaddr<<" "<<MySockInfo.port<<std::endl;
 
-        pSockInfo = pReader->get_sock_info(SOCK_UDP_SERVER_0);
-        std::cout<<pSockInfo->ipaddr<<" "<<pSockInfo->port<<std::endl;
+        MySockInfo = pReader->get_sock_info(SOCK_UDP_SERVER_0);
+        std::cout<<MySockInfo.ipaddr<<" "<<MySockInfo.port<<std::endl;
+        MySockInfo.port = 3222;
+        pReader->set_sock_info(SOCK_UDP_SERVER_0, MySockInfo);
 
         pReader->update_writer_value();
         delete pReader;
