@@ -10,6 +10,8 @@ namespace USR_DEVICE
 {
     using namespace USR_READER;
 
+    LED* LED::pInstance = nullptr;
+
     LED::LED(void):LED(DIE_LED)
     {
     }
@@ -17,16 +19,14 @@ namespace USR_DEVICE
     LED::LED(DevInfoEnum dev)
     {
         string led_device;
-        FileProcessHw *pReader = new FileProcessHw(HARDWART_JSON_DEFINE);
 
-        led_device = pReader->get_device_info(dev);
+        led_device = FileProcessHw::getInstance()->get_device_info(dev);
         std::cout<<led_device<<std::endl;
         pdev = new USR_DEVICE::device(led_device);
-        ledStatus = pReader->get_default_status(dev);
+        ledStatus = FileProcessHw::getInstance()->get_default_status(dev, 0);
         pdev->write(&ledStatus, 1);
 
-        delete pReader;
-        pReader = nullptr;
+        FileProcessHw::getInstance()->releaseInstance();
     }
 
     LED::~LED(void)
@@ -35,6 +35,28 @@ namespace USR_DEVICE
         {
             delete pdev;
             pdev = nullptr;
+        }
+    }
+
+    LED* LED::getInstance(void)
+    {
+        if(pInstance == nullptr)
+        {
+            pInstance = new(std::nothrow) LED;
+            if(pInstance == nullptr)
+            {
+                std::cout<<"LED class new failed!\r\n"<<std::endl;
+            }
+        }
+        return pInstance;
+    }
+
+    void LED::releaseInstance(void)
+    {
+        if(!pInstance)
+        {
+            delete pInstance;
+            pInstance = nullptr;
         }
     }
 
@@ -79,18 +101,11 @@ namespace USR_DEVICE
         return ledStatus;
     }
 
-    void test_led_module(void)
+    void LED::test(void)
     {
-        USR_DEVICE::LED *pdev = new USR_DEVICE::LED();
-        pdev->Trigger();
-        pdev->On();
-        delete pdev;
-        pdev = nullptr;
-
-        pdev = new USR_DEVICE::LED(DIE_LED0);
-        pdev->Trigger();
-        pdev->Off();
-        delete pdev;
-        pdev = nullptr;
+        USR_DEVICE::LED::getInstance()->On();
+        USR_DEVICE::LED::getInstance()->Off();
+        USR_DEVICE::LED::getInstance()->Trigger();
+        USR_DEVICE::LED::getInstance()->releaseInstance();
     }
 }

@@ -37,6 +37,7 @@ public:
         return is_vaild;
     }
 
+    virtual void update_writer_value(void) = 0;
 protected:
     Json::Value Reader;
     Json::Value Writer;

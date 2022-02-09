@@ -44,13 +44,23 @@ namespace USR_DEVICE
         /// \return led on/off status  
         uint8_t Status(void);
         
+        /// \fn getInstance() 
+        ///  - get the default Instance of the class
+        /// \return the point for the Instance
+        static BEEP* getInstance(void);
+
+      	/// \fn releaseInstance() 
+        ///  - release the Instance of the class
+        /// \return null
+        static void releaseInstance(void);
+
+        /// \fn test() 
+        ///  - test the modlue function
+        /// \return null
+        static void test(void);
     private:
         int beepStatus{0};
         device *pdev{nullptr};
+        static BEEP* pInstance;
     };
-
-    /// \fn test_led_module() 
-    ///  - Called for test beep module
-    /// \return NULL  
-    void test_beep_module(void);
 }

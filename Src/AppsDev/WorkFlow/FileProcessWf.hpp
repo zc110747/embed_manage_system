@@ -61,6 +61,16 @@ namespace USR_READER
     	///destructor
         ~FileProcessWf(){};
 
+      	/// \fn getInstance() 
+        ///  - get the default Instance of the class
+        /// \return the point for the Instance
+        static FileProcessWf* getInstance(void);
+
+      	/// \fn releaseInstance() 
+        ///  - release the Instance of the class
+        /// \return null
+        void releaseInstance(void);
+
       	/// \fn get_sock_info() 
         ///  - called for get sock infomation.
         /// \return true=do success, false=no info
@@ -68,12 +78,18 @@ namespace USR_READER
             return m_SockMap[sock];
         }
 
+      	/// \fn is_sock_list() 
+        ///  - check whether sock in the list
+        /// \return true=ok sock, false=fail find
         bool is_sock_list(SockListEnum sock){
             if(sock>=SOCK_TCP_SERVER_0 && sock<SOCK_LIST_END)
                 return true;
             return false;
         }
 
+      	/// \fn set_sock_info() 
+        ///  - set sock information
+        /// \return true=set ok, false=set failed
         bool set_sock_info(SockListEnum sock, const SocketInfo &info)
         {
             if(!is_sock_list(sock))
@@ -86,14 +102,19 @@ namespace USR_READER
         ///  - create and write files
         /// \return NULL
         void update_writer_value(void);
+
+        /// \fn test() 
+        ///  - test the modlue function
+        /// \return null
+        static void test(void);
     private:
+        struct std::map<SockListEnum, SocketInfo> m_SockMap;
+        static FileProcessWf* pInstance;
+
       	/// \fn get_sock_info_internal() 
         ///  - called for get socket info infomation internal.
         /// \return true=do success, false=no info
         bool get_sock_info_internal(SockListEnum sock, std::string SockStr);
-
-        struct std::map<SockListEnum, SocketInfo> m_SockMap;
-
     };
 
     //test for fileReadHw

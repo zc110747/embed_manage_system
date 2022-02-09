@@ -9,6 +9,8 @@ namespace USR_DEVICE
 {
     using namespace USR_READER;
 
+    API2C* API2C::pInstance = nullptr;
+    
     API2C::API2C(void):API2C(DIE_AP_I2C)
     {
     }
@@ -35,6 +37,28 @@ namespace USR_DEVICE
         }
     }
 
+    API2C* API2C::getInstance(void)
+    {
+        if(pInstance == nullptr)
+        {
+            pInstance = new(std::nothrow) API2C;
+            if(pInstance == nullptr)
+            {
+                std::cout<<"API2C class new failed!\r\n"<<std::endl;
+            }
+        }
+        return pInstance;
+    }
+
+    void API2C::releaseInstance(void)
+    {
+        if(!pInstance)
+        {
+            delete pInstance;
+            pInstance = nullptr;
+        }
+    }
+
     void API2C::update(void)
     {
         char *pBuf;
@@ -52,11 +76,9 @@ namespace USR_DEVICE
         }
     }
 
-    void test_ap_i2c_module(void)
+    void API2C::test(void)
     {
-        USR_DEVICE::API2C *pdev = new USR_DEVICE::API2C();
-        pdev->update();
-        delete pdev;
-        pdev = nullptr;
+        API2C::getInstance()->update();
+        API2C::getInstance()->releaseInstance();
     }
 }

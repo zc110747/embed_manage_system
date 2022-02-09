@@ -10,6 +10,8 @@ namespace USR_DEVICE
 {
     using namespace USR_READER;
 
+    BEEP* BEEP::pInstance = nullptr;
+
     BEEP::BEEP(void):BEEP(DIE_BEEP)
     {
     }
@@ -22,7 +24,7 @@ namespace USR_DEVICE
         beep_device = pReader->get_device_info(dev);
         std::cout<<beep_device<<std::endl;
         pdev = new USR_DEVICE::device(beep_device);
-        beepStatus = pReader->get_default_status(dev);
+        beepStatus = pReader->get_default_status(dev, 0);
         pdev->write(&beepStatus, 1);
 
         delete pReader;
@@ -35,6 +37,28 @@ namespace USR_DEVICE
         {
             delete pdev;
             pdev = nullptr;
+        }
+    }
+
+    BEEP* BEEP::getInstance(void)
+    {
+        if(pInstance == nullptr)
+        {
+            pInstance = new(std::nothrow) BEEP;
+            if(pInstance == nullptr)
+            {
+                std::cout<<"BEEP class new failed!\r\n"<<std::endl;
+            }
+        }
+        return pInstance;
+    }
+
+    void BEEP::releaseInstance(void)
+    {
+        if(!pInstance)
+        {
+            delete pInstance;
+            pInstance = nullptr;
         }
     }
 
@@ -79,18 +103,11 @@ namespace USR_DEVICE
         return beepStatus;
     }
 
-    void test_beep_module(void)
+    void BEEP::test(void)
     {
-        USR_DEVICE::BEEP *pdev = new USR_DEVICE::BEEP();
-        pdev->Trigger();
-        pdev->On();
-        delete pdev;
-        pdev = nullptr;
-
-        pdev = new USR_DEVICE::BEEP(DIE_BEEP0);
-        pdev->Trigger();
-        pdev->Off();
-        delete pdev;
-        pdev = nullptr;
+        BEEP::getInstance()->Trigger();
+        BEEP::getInstance()->On();
+        BEEP::getInstance()->Off();
+        BEEP::getInstance()->releaseInstance();
     }
 }

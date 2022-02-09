@@ -9,6 +9,8 @@ namespace USR_DEVICE
 {
     using namespace USR_READER;
 
+    ICMSPI* ICMSPI::pInstance = nullptr;
+
     ICMSPI::ICMSPI(void):ICMSPI(DIE_ICM_SPI)
     {
     }
@@ -35,6 +37,28 @@ namespace USR_DEVICE
         }
     }
 
+    ICMSPI* ICMSPI::getInstance(void)
+    {
+        if(pInstance == nullptr)
+        {
+            pInstance = new(std::nothrow) ICMSPI;
+            if(pInstance == nullptr)
+            {
+                std::cout<<"ICMSPI class new failed!\r\n"<<std::endl;
+            }
+        }
+        return pInstance;
+    }
+
+    void ICMSPI::releaseInstance(void)
+    {
+        if(!pInstance)
+        {
+            delete pInstance;
+            pInstance = nullptr;
+        }
+    }
+
     void ICMSPI::update(void)
     {
         char *pBuf;
@@ -55,11 +79,9 @@ namespace USR_DEVICE
         }
     }
 
-    void test_icm_spi_module(void)
+    void ICMSPI::test(void)
     {
-        USR_DEVICE::ICMSPI *pdev = new USR_DEVICE::ICMSPI();
-        pdev->update();
-        delete pdev;
-        pdev = nullptr;
+        ICMSPI::getInstance()->update();
+        ICMSPI::getInstance()->releaseInstance();
     }
 }

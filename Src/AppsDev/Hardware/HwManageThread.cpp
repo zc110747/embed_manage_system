@@ -5,6 +5,8 @@
  */
 #include "HwManageThread.hpp"
 
+HwManageThread* HwManageThread::pInstance = nullptr;
+
 HwManageThread::HwManageThread(std::string ThreadName):
     gThread()
 {
@@ -16,61 +18,51 @@ HwManageThread::~HwManageThread()
 {
 }
 
+HwManageThread* HwManageThread::getInstance(void)
+{
+    if(pInstance == nullptr)
+    {
+        pInstance = new(std::nothrow) HwManageThread(DEFAULT_THREAD_NAME);
+        if(pInstance == nullptr)
+        {
+            std::cout<<"HwManageThread class new failed!\r\n"<<std::endl;
+        }
+    }
+    return pInstance;
+}
+
+void HwManageThread::releaseInstance(void)
+{
+    if(pInstance != nullptr)
+    {
+        delete pInstance;
+        pInstance = nullptr;
+    }
+}
+
 bool HwManageThread::Tmain(void)
 {
-    create_device_object();
-
     while(!m_exit_flag)
     {
-        prvLed->On();
+        USR_DEVICE::LED::getInstance()->On();
         sleep(1);
-        prvLed->Off();
-        sleep(1);
-
-        prvBeep->On();
-        sleep(1);
-        prvBeep->Off();
+        USR_DEVICE::LED::getInstance()->Off();
         sleep(1);
 
-        prvAp->update();
-        prvIcm->update();
+        USR_DEVICE::BEEP::getInstance()->On();
+        sleep(1);
+        USR_DEVICE::BEEP::getInstance()->Off();
+        sleep(1);
+
+        USR_DEVICE::API2C::getInstance()->update();
+        USR_DEVICE::ICMSPI::getInstance()->update();
     }
 
-    release_device_object();
+    USR_DEVICE::LED::getInstance()->releaseInstance();
+    USR_DEVICE::BEEP::getInstance()->releaseInstance();
+    USR_DEVICE::API2C::getInstance()->releaseInstance();
+    USR_DEVICE::ICMSPI::getInstance()->releaseInstance();
 
     m_finished = 1;
     return true;
-}
-
-
-void HwManageThread::create_device_object(void)
-{
-    prvLed = new USR_DEVICE::LED();
-    prvBeep = new USR_DEVICE::BEEP();
-    prvAp = new USR_DEVICE::API2C();
-    prvIcm = new USR_DEVICE::ICMSPI();
-}
-
-
-void HwManageThread::release_device_object(void)
-{
-    if(prvLed){
-        delete prvLed;
-        prvLed = nullptr;
-    }
-
-    if(prvBeep){
-        delete prvBeep;
-        prvBeep = nullptr;
-    }
-
-    if(prvAp){
-        delete prvAp;
-        prvAp = nullptr;
-    }
-
-    if(prvIcm){
-        delete prvIcm;
-        prvIcm = nullptr;
-    }
 }

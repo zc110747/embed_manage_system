@@ -11,6 +11,8 @@
 #include "ApI2c.hpp"
 #include "IcmSpi.hpp"
 
+#define DEFAULT_THREAD_NAME "Instance"
+
 class HwManageThread : public gThread
 {
 public:
@@ -27,21 +29,17 @@ public:
     /// \return true=success after executed, false=fail after executed
 	bool Tmain();
 
+    /// \fn getInstance() 
+    ///  - get the default Instance of the class
+    /// \return the point for the Instance
+    static HwManageThread *getInstance(void);
+    
+    /// \fn releaseInstance() 
+    ///  - release the Instance of the class
+    /// \return null
+    void releaseInstance(void);
 private:
     int m_exit_flag;
 
-    USR_DEVICE::LED *prvLed;
-    USR_DEVICE::BEEP *prvBeep;
-    USR_DEVICE::API2C *prvAp;
-    USR_DEVICE::ICMSPI *prvIcm;
-
-    /// \fn create_device_object() 
-    ///  create device used by thread
-    /// \return NULL
-    void create_device_object(void);
-
-    /// \fn release_device_object() 
-    ///  release device and memory
-    /// \return NULL
-    void release_device_object(void);
+    static HwManageThread* pInstance;
 };

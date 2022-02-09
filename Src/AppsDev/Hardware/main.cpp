@@ -24,15 +24,12 @@ int main(int argc, char **argv)
 #if MODULE_TEST == 1
     module_test();
 #else
-    HwManageThread *pThread;
-    pThread = new HwManageThread("Hardware");
-    pThread->Start();
+    HwManageThread::getInstance()->Start();
 
     HW_MainLoop();
 
-    pThread->Stop();
-    delete pThread;
-    pThread = nullptr;
+    HwManageThread::getInstance()->Stop();
+    HwManageThread::getInstance()->releaseInstance();
     return 0;
 #endif
 }
@@ -49,9 +46,9 @@ static void HW_MainLoop(void)
 
 static void module_test(void)
 {
-    USR_READER::test_file_reader_hw();
-    USR_DEVICE::test_led_module();
-    USR_DEVICE::test_beep_module();
-    USR_DEVICE::test_ap_i2c_module();
-    USR_DEVICE::test_icm_spi_module();
+    USR_READER::FileProcessHw::test();
+    USR_DEVICE::LED::test();
+    USR_DEVICE::BEEP::test();
+    USR_DEVICE::API2C::test();
+    USR_DEVICE::ICMSPI::test();
 }

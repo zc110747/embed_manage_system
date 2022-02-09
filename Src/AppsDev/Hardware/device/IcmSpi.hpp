@@ -61,14 +61,23 @@ namespace USR_DEVICE
             return &m_info;
         }
         
+        /// \fn getInstance() 
+        ///  - get the default Instance of the class
+        /// \return the point for the Instance
+        static ICMSPI* getInstance(void);
+
+      	/// \fn releaseInstance() 
+        ///  - release the Instance of the class
+        /// \return null
+        static void releaseInstance(void);
+
+        /// \fn test() 
+        ///  - test the modlue function
+        /// \return null
+        static void test(void);
     private:
         struct SIcmInfo m_info;
-
         device *pdev{nullptr};
+        static ICMSPI *pInstance;
     };
-
-    /// \fn test_icm_spi_module() 
-    ///  - Called for test icm spi module
-    /// \return NULL  
-    void test_icm_spi_module(void);
 }

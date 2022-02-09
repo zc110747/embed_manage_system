@@ -14,10 +14,34 @@ namespace USR_READER
         {SOCK_TCP_CLIENT_0, "SOCK_TCP_CLIENT_0"},
     };
 
+    FileProcessWf* FileProcessWf::pInstance = nullptr;
+
     FileProcessWf::FileProcessWf(string file):FileProcess(file)
     {
         for(auto &ref_val:SockStrMap)
             get_sock_info_internal(ref_val.first, ref_val.second);
+    }
+
+    FileProcessWf* FileProcessWf::getInstance(void)
+    {
+        if(pInstance == nullptr)
+        {
+            pInstance = new(std::nothrow) FileProcessWf;
+            if(pInstance == nullptr)
+            {
+                std::cout<<"FileProcessWf class new failed!\r\n"<<std::endl;
+            }
+        }
+        return pInstance;
+    }
+
+    void FileProcessWf::releaseInstance(void)
+    {
+        if(pInstance != nullptr)
+        {
+            delete pInstance;
+            pInstance = nullptr;
+        }
     }
 
     bool FileProcessWf::get_sock_info_internal(SockListEnum sock, std::string SockStr)
@@ -73,21 +97,19 @@ namespace USR_READER
         writer();
     }
 
-    void test_file_reader_wf(void)
+    void FileProcessWf::test(void)
     {
-        FileProcessWf *pReader = new FileProcessWf();
         SocketInfo MySockInfo;
 
-        MySockInfo = pReader->get_sock_info(SOCK_TCP_SERVER_0);
+        MySockInfo = FileProcessWf::getInstance()->get_sock_info(SOCK_TCP_SERVER_0);
         std::cout<<MySockInfo.ipaddr<<" "<<MySockInfo.port<<std::endl;
 
-        MySockInfo = pReader->get_sock_info(SOCK_UDP_SERVER_0);
+        MySockInfo = FileProcessWf::getInstance()->get_sock_info(SOCK_UDP_SERVER_0);
         std::cout<<MySockInfo.ipaddr<<" "<<MySockInfo.port<<std::endl;
         MySockInfo.port = 3222;
-        pReader->set_sock_info(SOCK_UDP_SERVER_0, MySockInfo);
+        FileProcessWf::getInstance()->set_sock_info(SOCK_UDP_SERVER_0, MySockInfo);
 
-        pReader->update_writer_value();
-        delete pReader;
-        pReader = nullptr;
+        FileProcessWf::getInstance()->update_writer_value();
+        FileProcessWf::getInstance()->releaseInstance();
     }
 }

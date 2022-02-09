@@ -21,5 +21,5 @@ int main(int argc, char **argv)
 
 static void module_test(void)
 {
-    USR_READER::test_file_reader_wf();
+    USR_READER::FileProcessWf::test();
 }

@@ -43,14 +43,25 @@ namespace USR_DEVICE
         ///  - get current led status.
         /// \return led on/off status  
         uint8_t Status(void);
+
+      	/// \fn getInstance() 
+        ///  - get the default Instance of the class
+        /// \return the point for the Instance
+        static LED* getInstance(void);
+
+      	/// \fn releaseInstance() 
+        ///  - release the Instance of the class
+        /// \return null
+        static void releaseInstance(void);
         
+        /// \fn test() 
+        ///  - test the modlue function
+        /// \return null
+        static void test(void);
     private:
         int ledStatus{0};
         device *pdev{nullptr};
-    };
 
-    /// \fn test_led_module() 
-    ///  - Called for test led module
-    /// \return NULL  
-    void test_led_module(void);
+        static LED *pInstance;
+    };
 }

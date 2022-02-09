@@ -46,14 +46,23 @@ namespace USR_DEVICE
             return &m_info;
         }
         
+        /// \fn getInstance() 
+        ///  - get the default Instance of the class
+        /// \return the point for the Instance
+        static API2C* getInstance(void);
+
+      	/// \fn releaseInstance() 
+        ///  - release the Instance of the class
+        /// \return null
+        static void releaseInstance(void);
+
+      	/// \fn test() 
+        ///  - test the modlue function
+        /// \return null
+        static void test(void);
     private:
         struct SApInfo m_info;
-
         device *pdev{nullptr};
+        static API2C* pInstance;
     };
-
-    /// \fn test_ap_i2c_module() 
-    ///  - Called for test ap i2c module
-    /// \return NULL  
-    void test_ap_i2c_module(void);
 }

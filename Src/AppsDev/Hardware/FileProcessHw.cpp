@@ -10,6 +10,10 @@
 
 namespace USR_READER
 {
+    using namespace std;
+
+    FileProcessHw* FileProcessHw::pInstance = nullptr;
+
     const std::map<int, std::string> DevSrcVec = {
         {DIE_SERIAL, "Serial"},
         {DIE_LED, "Led"},
@@ -17,13 +21,48 @@ namespace USR_READER
         {DIE_ICM_SPI, "IcmSpi"},
         {DIE_RTC, "Rtc"},
         {DIE_AP_I2C, "ApI2c"},
-        {DIE_LED0, "Led0"},
-        {DIE_BEEP0, "Beep0"}
     };
 
     const std::vector<int> DevStatusList = {
-        DIE_LED, DIE_BEEP, DIE_LED0, DIE_BEEP0
+        DIE_LED, DIE_BEEP
     };
+
+    FileProcessHw::FileProcessHw(std::string file):FileProcess(file)
+    {
+        int index;
+
+        for_each(DevSrcVec.begin(), DevSrcVec.end(), [&](const typename std::pair<int, std::string> &ref){
+            get_device_info_interal((DevInfoEnum)ref.first);
+        });
+
+        for_each(DevStatusList.begin(), DevStatusList.end(), [&](const int &ref){
+            get_default_status_interal((DevInfoEnum)ref);
+        });
+
+        get_uart_info_interal();
+    }
+
+    FileProcessHw* FileProcessHw::getInstance(void)
+    {
+        if(pInstance == nullptr)
+        {
+            pInstance = new(std::nothrow) FileProcessHw;
+            if(pInstance == nullptr)
+            {
+                std::cout<<"FileProcessHw class new failed!\r\n"<<std::endl;
+            }
+        }
+        return pInstance;
+    }
+
+    void FileProcessHw::releaseInstance(void)
+    {
+        if(pInstance != nullptr)
+        {
+            delete pInstance;
+            pInstance = nullptr;
+        }
+    }
 
     bool FileProcessHw::is_valid_dev_status(DevInfoEnum dev)
     {
@@ -82,17 +121,17 @@ namespace USR_READER
         Json::Value StatusMember;
         bool is_error = false;   
 
-        if(!is_reader_valid())
-            return false;
-        
-        m_status[dev] = Reader["Default"][DevSrcVec.at(dev)].isInt()?Reader["Default"][DevSrcVec.at(dev)].asInt()
-            :([&is_error](){is_error = true; return 0;}());
-
-        if(is_error)
+        if(!is_reader_valid() && !Reader["Default"][DevSrcVec.at(dev)].isArray())
         {
             printf("Json Value Reader have Invalid member %s!\r\n", "Device");
             return false;
         }
+        
+        for(int index=0; index<MAX_ARRAY_STATUS_SIZE; index++)
+        {
+            m_status[dev].at(index) = Reader["Default"][DevSrcVec.at(dev)][index].asInt();
+        }
+
         return true;
     }
 
@@ -105,10 +144,12 @@ namespace USR_READER
         Obj.clear();
 
         //add status member
-        Obj["Led"] = m_status[DIE_LED];
-        Obj["Beep"] = m_status[DIE_BEEP];
-        Obj["Led0"] = m_status[DIE_LED0];
-        Obj["Beep0"] = m_status[DIE_BEEP0];
+        for_each(m_status[DIE_LED].begin(), m_status[DIE_LED].end(), [&](const int &ref){
+            Obj["Led"].append(ref);
+        });
+        for_each(m_status[DIE_BEEP].begin(), m_status[DIE_BEEP].end(), [&](const int &ref){
+            Obj["Beep"].append(ref);
+        });
         Writer["Default"] = Obj;
         Obj.clear();
 
@@ -129,46 +170,38 @@ namespace USR_READER
         Obj.clear();
 
         std::cout<<Writer<<std::endl;
-        //writer();
+        writer();
     }
 
     //test for fileReadHw
-    void test_file_reader_hw(void)
+    void FileProcessHw::test(void)
     {
-        FileProcessHw *pReader = new FileProcessHw(HARDWART_JSON_DEFINE);
         UartInfo UartInfo;
         string DeviceStr;
         int DeviceStatus;
         int index;
 
-        UartInfo = pReader->get_uart_info();
+        UartInfo = FileProcessHw::getInstance()->get_uart_info();
         std::cout<<UartInfo.baud<<" "<<UartInfo.databits<<" "<<UartInfo.stopbits<<std::endl;
         std::cout<<UartInfo.parity<<std::endl;
 
         for(index=DIE_SERIAL; index<DIE_END; index++)
         {
-            DeviceStr = pReader->get_device_info((DevInfoEnum)index);
+            DeviceStr = FileProcessHw::getInstance()->get_device_info((DevInfoEnum)index);
             std::cout<<DevSrcVec.at(index)<<":"<<DeviceStr<<std::endl;
         }
 
-        DeviceStatus = pReader->get_default_status(DIE_LED);
-        std::cout<<DevSrcVec.at(DIE_LED)<<DeviceStatus<<std::endl;
+        DeviceStatus = FileProcessHw::getInstance()->get_default_status(DIE_LED, 0);
+        std::cout<<DevSrcVec.at(DIE_LED)<<":"<<DeviceStatus<<std::endl;
 
-        DeviceStatus = pReader->get_default_status(DIE_BEEP);
-        std::cout<<DevSrcVec.at(DIE_LED0)<<DeviceStatus<<std::endl;
+        DeviceStatus = FileProcessHw::getInstance()->get_default_status(DIE_BEEP, 0);
+        std::cout<<DevSrcVec.at(DIE_BEEP)<<":"<<DeviceStatus<<std::endl;
 
-        DeviceStatus = pReader->get_default_status(DIE_LED0);
-        std::cout<<DevSrcVec.at(DIE_BEEP)<<DeviceStatus<<std::endl;
-
-        DeviceStatus = pReader->get_default_status(DIE_BEEP0);
-        std::cout<<DevSrcVec.at(DIE_BEEP0)<<DeviceStatus<<std::endl;
-
-        pReader->set_default_status(DIE_BEEP, 1);
-        pReader->set_device_info(DIE_BEEP0, "/dev/beep0");
-        pReader->set_device_info(DIE_LED0, "/dev/led0");
-        pReader->update_writer_value();
-        delete pReader;
-        pReader = nullptr;
+        FileProcessHw::getInstance()->set_default_status(DIE_BEEP, 0,  1);
+        FileProcessHw::getInstance()->set_device_info(DIE_BEEP, "/dev/beep0");
+        FileProcessHw::getInstance()->set_device_info(DIE_LED, "/dev/led0");
+        FileProcessHw::getInstance()->update_writer_value();
+        FileProcessHw::getInstance()->releaseInstance();
     }
 }
 
