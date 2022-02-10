@@ -109,7 +109,10 @@ public:
     void setAction(pfunc action);
     void start(int first, int period);
     void stop();
+    static gTimer *getInstance(void);
+    static void ReleaseInstance(void);
 private:
     static void timerHandler(int signo);
     static pfunc func_ptr;
+    static gTimer* pInstance;
 };

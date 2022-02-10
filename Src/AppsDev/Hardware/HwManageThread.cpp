@@ -48,9 +48,8 @@ void HwTimerHandler(void)
 
 bool HwManageThread::Tmain(void)
 {
-    gTimer *pTimer = new gTimer();
-    pTimer->setAction(HwTimerHandler);
-    pTimer->start(2, 2);
+    gTimer::getInstance()->setAction(HwTimerHandler);
+    gTimer::getInstance()->start(2, 2);
 
     while(!m_exit_flag)
     {
@@ -66,8 +65,9 @@ bool HwManageThread::Tmain(void)
 
     }
 
-    pTimer->stop();
+    gTimer::getInstance()->stop();
     sleep(2);
+    gTimer::getInstance()->ReleaseInstance();
     USR_DEVICE::LED::getInstance()->releaseInstance();
     USR_DEVICE::BEEP::getInstance()->releaseInstance();
     USR_DEVICE::API2C::getInstance()->releaseInstance();

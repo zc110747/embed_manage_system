@@ -101,6 +101,8 @@ void* gThread::Entry(void* in)
 }
 
 pfunc gTimer::func_ptr = nullptr;
+gTimer* gTimer::pInstance = nullptr;
+
 gTimer::gTimer()
 {
 	signal(SIGALRM, timerHandler);
@@ -109,6 +111,28 @@ gTimer::gTimer()
 gTimer::~gTimer()
 {
 	func_ptr = nullptr;
+}
+
+gTimer* gTimer::getInstance(void)
+{
+	if(pInstance == nullptr)
+	{
+		pInstance = new(std::nothrow) gTimer;
+		if(pInstance == nullptr)
+		{
+			std::cout<<"gTimer Create Error\r\n"<<std::endl;
+		}
+	}
+	return pInstance;
+}
+
+void gTimer::ReleaseInstance(void)
+{
+	if(pInstance != nullptr)
+	{
+		delete pInstance;
+		pInstance = nullptr;
+	}
 }
 
 void gTimer::setAction(pfunc action)
