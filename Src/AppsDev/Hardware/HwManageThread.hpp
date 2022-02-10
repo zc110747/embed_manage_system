@@ -13,6 +13,7 @@
 
 #define DEFAULT_THREAD_NAME "Instance"
 
+
 class HwManageThread : public gThread
 {
 public:

@@ -40,8 +40,18 @@ void HwManageThread::releaseInstance(void)
     }
 }
 
+void HwTimerHandler(void)
+{
+    USR_DEVICE::API2C::getInstance()->update();
+    USR_DEVICE::ICMSPI::getInstance()->update();
+}
+
 bool HwManageThread::Tmain(void)
 {
+    gTimer *pTimer = new gTimer();
+    pTimer->setAction(HwTimerHandler);
+    pTimer->start(2, 2);
+
     while(!m_exit_flag)
     {
         USR_DEVICE::LED::getInstance()->On();
@@ -54,10 +64,10 @@ bool HwManageThread::Tmain(void)
         USR_DEVICE::BEEP::getInstance()->Off();
         sleep(1);
 
-        USR_DEVICE::API2C::getInstance()->update();
-        USR_DEVICE::ICMSPI::getInstance()->update();
     }
 
+    pTimer->stop();
+    sleep(2);
     USR_DEVICE::LED::getInstance()->releaseInstance();
     USR_DEVICE::BEEP::getInstance()->releaseInstance();
     USR_DEVICE::API2C::getInstance()->releaseInstance();

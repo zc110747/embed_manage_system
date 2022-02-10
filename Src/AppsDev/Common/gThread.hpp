@@ -9,6 +9,9 @@
 #include <pthread.h>
 #include <string>
 #include <unistd.h>
+#include <signal.h>
+#include <time.h> 
+#include <sys/time.h>
 
 class gThread
 {
@@ -93,4 +96,20 @@ private:
     /// -
     /// thread list
     static std::list<gThread *> threads;
+};
+
+typedef void (*pfunc)(void);
+
+class gTimer
+{
+public:
+    gTimer();
+    ~gTimer();
+
+    void setAction(pfunc action);
+    void start(int first, int period);
+    void stop();
+private:
+    static void timerHandler(int signo);
+    static pfunc func_ptr;
 };
