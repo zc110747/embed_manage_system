@@ -6,6 +6,7 @@
 #pragma once
 
 #include <list>
+#include <vector>
 #include <pthread.h>
 #include <string>
 #include <unistd.h>
@@ -98,7 +99,16 @@ private:
     static std::list<gThread *> threads;
 };
 
+#define SYSTME_TIME_BASED_PEROID  1
 typedef void (*pfunc)(void);
+typedef struct 
+{
+  pfunc func;
+  int id;
+  bool allowed;
+  int current_times;
+  int max_times;
+}TimerFunc;
 
 class gTimer
 {
@@ -106,13 +116,17 @@ public:
     gTimer();
     ~gTimer();
 
-    void setAction(pfunc action);
-    void start(int first, int period);
+    void InsertAction(TimerFunc* action);
+    void StartAction(int id, int times);
+    void StopAction(int id);
+    void start();
     void stop();
+    
+    static void timerHandler(int signo);
     static gTimer *getInstance(void);
     static void ReleaseInstance(void);
 private:
-    static void timerHandler(int signo);
-    static pfunc func_ptr;
+    static std::vector<TimerFunc *> FuncList;
+
     static gTimer* pInstance;
 };

@@ -46,23 +46,28 @@ void HwTimerHandler(void)
     USR_DEVICE::ICMSPI::getInstance()->update();
 }
 
+std::vector<TimerFunc> TimeVec = {
+    {HwTimerHandler, 0, false, 0, 4},
+};
 bool HwManageThread::Tmain(void)
 {
-    gTimer::getInstance()->setAction(HwTimerHandler);
-    gTimer::getInstance()->start(2, 2);
+    gTimer::getInstance()->InsertAction(&TimeVec[0]);
+    gTimer::getInstance()->StartAction(0, 4);
+    gTimer::getInstance()->start();
 
     while(!m_exit_flag)
     {
-        USR_DEVICE::LED::getInstance()->On();
-        sleep(1);
-        USR_DEVICE::LED::getInstance()->Off();
+        // USR_DEVICE::LED::getInstance()->On();
+        // sleep(1);
+        // USR_DEVICE::LED::getInstance()->Off();
+        // sleep(1);
+
+        // USR_DEVICE::BEEP::getInstance()->On();
+        // sleep(1);
+        // USR_DEVICE::BEEP::getInstance()->Off();
         sleep(1);
 
-        USR_DEVICE::BEEP::getInstance()->On();
-        sleep(1);
-        USR_DEVICE::BEEP::getInstance()->Off();
-        sleep(1);
-
+        gTimer::getInstance()->timerHandler(0);
     }
 
     gTimer::getInstance()->stop();

@@ -11,11 +11,11 @@
 Objects = main.o \
 		FileProcessHw.o \
 		HwManageThread.o \
-		device/device.o \
-		device/led.o \
-		device/beep.o \
-		device/ApI2c.o \
-		device/IcmSpi.o \
+		Device/device.o \
+		Device/led.o \
+		Device/beep.o \
+		Device/ApI2c.o \
+		Device/IcmSpi.o \
 		../Common/FileProcess.o \
 		../Common/gThread.o
 
@@ -24,7 +24,7 @@ CurrentPath = $(shell pwd)
 StaticLibs = ../Common/ExternalPackages/libjason.a
 
 IncludePath = -I "$(CurrentPath)/../Common/" \
-			-I "$(CurrentPath)/device/"		 \
+			-I "$(CurrentPath)/Device/"		 \
 			-I "$(CurrentPath)"				 \
 			-I "$(CurrentPath)/../Common/ExternalPackages/jsoncpp/include/"
 

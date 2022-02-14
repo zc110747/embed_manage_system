@@ -6,7 +6,7 @@
 
 #include "beep.hpp"
 
-namespace USR_DEVICE
+namespace USR_DEVICE 
 {
     using namespace USR_READER;
 
