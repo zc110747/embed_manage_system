@@ -17,7 +17,8 @@ Objects = main.o \
 		Device/ApI2c.o \
 		Device/IcmSpi.o \
 		../Common/FileProcess.o \
-		../Common/gThread.o
+		../Common/gThread.o \
+		../Common/gTimer.o
 
 CurrentPath = $(shell pwd)
 

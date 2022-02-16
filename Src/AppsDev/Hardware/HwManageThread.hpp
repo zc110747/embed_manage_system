@@ -6,6 +6,7 @@
 #pragma once
 
 #include "gThread.hpp"
+#include "gTimer.hpp"
 #include "beep.hpp"
 #include "led.hpp"
 #include "ApI2c.hpp"
@@ -30,6 +31,11 @@ public:
     /// \return true=success after executed, false=fail after executed
 	bool Tmain();
 
+    /// \fn initTask() 
+    ///  - int the information for the task
+    /// \return NULL
+    void initTask(void);
+
     /// \fn getInstance() 
     ///  - get the default Instance of the class
     /// \return the point for the Instance
@@ -37,7 +43,7 @@ public:
     
     /// \fn releaseInstance() 
     ///  - release the Instance of the class
-    /// \return null
+    /// \return NULL
     void releaseInstance(void);
 private:
     int m_exit_flag;

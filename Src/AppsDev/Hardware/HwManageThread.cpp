@@ -49,12 +49,15 @@ void HwTimerHandler(void)
 std::vector<TimerFunc> TimeVec = {
     {HwTimerHandler, 0, false, 0, 4},
 };
-bool HwManageThread::Tmain(void)
+void HwManageThread::initTask(void)
 {
     gTimer::getInstance()->InsertAction(&TimeVec[0]);
     gTimer::getInstance()->StartAction(0, 4);
     gTimer::getInstance()->start();
+}
 
+bool HwManageThread::Tmain(void)
+{
     while(!m_exit_flag)
     {
         // USR_DEVICE::LED::getInstance()->On();
